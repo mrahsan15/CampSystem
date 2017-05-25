@@ -1,3 +1,4 @@
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="mandays.menuoutput"%>
 <%@page import="java.sql.ResultSet"%>
 <!DOCTYPE html>
@@ -6,35 +7,23 @@
 <!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
 
 <%@ page import="java.sql.*" %>
-<% Class.forName("com.mysql.jdbc.Driver");
+<%@include file="cookies.jsp" %>
+<% 
+Statement statement = connection.createStatement();
+%>
 
-    int campstaffid = 0;        
-    Connection connection = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/campsystem", "root", "root");
-    Statement statement = connection.createStatement();
-        Cookie cookie = null;
-        Cookie[] cookies = null;
-        // Get an array of Cookies associated with this domain
-        cookies = request.getCookies();
-        int logged= 0;
-        
-        if( cookies != null ){
-           for (int i = 0; i < cookies.length; i++){
-              cookie = cookies[i];
-              if((cookie.getName()).equals("loggedin")){
-                  if(cookie.getValue().equals("true")){
-                      for (int j = 0; j < cookies.length; j++){
-                        cookie = cookies[j];
-                        if((cookie.getName()).equals("campstaffid")){
-                            campstaffid = Integer.parseInt(cookie.getValue());
-                            logged++;
-                        }
-                     }
-                  }
-              }
-           }
-        }
- %>
+<%
+String archiverequest = request.getParameter("archive");
+if(archiverequest != null){
+    Statement archivestatement = connection.createStatement();
+    String archivequery = "UPDATE complainbook SET Archived = '1' WHERE complainbook.ID = "+archiverequest;
+    archivestatement.executeUpdate(archivequery);
+}
+
+%>
+
+
+
 <!--[if !IE]><!-->
 <html lang="en">
     <!--<![endif]-->
@@ -79,7 +68,7 @@
                 <!-- BEGIN LOGO -->
                 <div class="page-logo">
                     <a href="dashboard.jsp">
-                        <img src="assets/layouts/layout/img/logo.png" alt="logo" class="logo-default" /> </a>
+                        <img src="" alt="logo" class="logo-default" /> </a>
                     <div class="menu-toggler sidebar-toggler"> </div>
                 </div>
                 <!-- END LOGO -->
@@ -100,14 +89,14 @@
                         <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
                         <li class="dropdown dropdown-user">
                             <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                                <img alt="" class="img-circle" src="assets/layouts/layout/img/avatar_small.jpg" />
+                                <img alt="" class="img-circle" src="<% out.println(ProfilePicture); %>" />
                                 <span class="username username-hide-on-mobile">
                                     
                                     <% 
                                         ResultSet staffdetails = statement.executeQuery("SELECT * from campstaff WHERE ID =" + campstaffid);
                                         staffdetails.next();
-                                        String Name[] = staffdetails.getString("Name").split(" ");
-                                        out.println(Name[0]);
+                                        String Name = staffdetails.getString("FirstName");
+                                        out.println(Name);
                                     %></span>
                                 <i class="fa fa-angle-down"></i>
                             </a>
@@ -205,7 +194,7 @@
                             <!-- END RESPONSIVE QUICK SEARCH FORM -->
                         </li>
                         <%
-                        new menuoutput(campstaffid, out);
+                        %><%@include file="menu.jsp" %><%
                         %>
                     </ul>
                     <!-- END SIDEBAR MENU -->
@@ -309,11 +298,11 @@
                                 <i class="fa fa-circle"></i>
                             </li>
                             <li>
-                                <a href="#">Tables</a>
+                                <a href="#">Complain System</a>
                                 <i class="fa fa-circle"></i>
                             </li>
                             <li>
-                                <span>Datatables</span>
+                                <span>Complain Book</span>
                             </li>
                         </ul>
                         <div class="page-toolbar">
@@ -327,8 +316,8 @@
                     </div>
                     <!-- END PAGE BAR -->
                     <!-- BEGIN PAGE TITLE-->
-                    <h3 class="page-title"> Managed Datatables
-                        <small>managed datatable samples</small>
+                    <h3 class="page-title"> Complain Book
+                        <small></small>
                     </h3>
                     <!-- END PAGE TITLE-->
                     <!-- END PAGE HEADER-->
@@ -336,13 +325,13 @@
                     <div class="row">
                         <div class="col-md-12">
                             <!-- BEGIN EXAMPLE TABLE PORTLET-->
-                                                                <table class="table table-striped table-bordered table-hover table-header-fixed" id="sample_1">
+                            <table class="table table-striped table-bordered table-hover" id="sample_1">
                                         <thead>
                                             <tr>
                                                 <th> Comp# </th>
                                                 <th> Area </th>
                                                 <th> Submitted By</th>
-                                                <th> Submitted Time </th>
+                                                <th  width="120"> Submitted Time </th>
                                                 <th> Resolved By </th>
                                                 <th> Resolving Time </th>
                                                 <th> Status </th>
@@ -352,10 +341,11 @@
                                         <tbody>
             <%
             try{
-                ResultSet complainrecords=  connection.createStatement().executeQuery("SELECT * from complainbook ORDER BY DateTime DESC");
+                ResultSet complainrecords=  connection.createStatement().executeQuery("SELECT * from complainbook WHERE Archived = 0 ORDER BY DateTime DESC");
                 while(complainrecords.next()){
                     System.out.println("ResultSet CAlled");
                 int id = complainrecords.getInt("ID");
+                SimpleDateFormat dateoutput = new SimpleDateFormat("dd-MMM-yyyy hh:mm a");
                 
                 String Description = complainrecords.getString("Description");
                 String roomno = complainrecords.getString("Area");
@@ -375,47 +365,55 @@
                 String status = "";
                 
                 if(solved == 1){
-                    ResolvedAt = ""+complainrecords.getTimestamp("solvedat");
-                    status = "<button type=\"button\" class=\"btn green-meadow\">Solved</button>";
+                    ResolvedAt = dateoutput.format(complainrecords.getTimestamp("solvedat"));
+                    
+                    status = ""
+                            + "<form action=\"complainreviewadmin.jsp?archive="+id+" method=\"get\"\">"
+                            + "<input type=\"hidden\" name=\"archive\" value=\""+id+"\" />"
+                            + "<button type=\"submit\"class=\"btn green-blue\">Solved, Archieve?</button>"
+                            + "</form>";
                 
                 }else{
                     if(checked == 0){
                         status = "<button type=\"button\" class=\"btn red-sunglo\">Not Checked</button>";
                     }else{
-                        checkedat = complainrecords.getTimestamp("checkedat");
+                        checkedat = (complainrecords.getTimestamp("checkedat"));
                         status =  "<button type=\"button\" class=\"btn yellow-crusta\">Pending</button>";
                     }
                 }
                 
                 ResultSet staffname = connection.createStatement()
-                        .executeQuery("SELECT Name from campstaff WHERE ID = "+ submittedby);
+                        .executeQuery("SELECT FirstName from campstaff WHERE ID = "+ submittedby);
                 staffname.next();
-                SubmissionBy = staffname.getString("Name");
+                SubmissionBy = staffname.getString("FirstName");
                 
                 staffname = connection.createStatement()
-                        .executeQuery("SELECT Name from campstaff WHERE ID = "+ forwardedto);
+                        .executeQuery("SELECT FirstName from campstaff WHERE ID = "+ forwardedto);
                 staffname.next();
-                String forwardto = staffname.getString("Name");
+                String forwardto = staffname.getString("FirstName");
                 try{
                 if(solved == 1){
                     staffname = connection.createStatement()
-                        .executeQuery("SELECT Name from campstaff WHERE ID = "+ solvedby);
+                        .executeQuery("SELECT FirstName from campstaff WHERE ID = "+ solvedby);
                     staffname.next();
-                    ResolvedBy = staffname.getString("Name");
+                    ResolvedBy = staffname.getString("FirstName");
                 }}catch(Exception ex){
                     
                 }
                 
+                
                 out.println(
-"<form action=\"complainreview\" method=\"post\">\n" +
+""
+        
+        +
 "<tr>\n"
         + "<td class=\"center\">"+id+"<input type=\"hidden\" name=\"compainID\" value=\""+id+"\" /></td>"
         + "<td>"+roomno+"</td>"
         + "<td class=\"center\"> "+SubmissionBy+"</td>"
-        + "<td class=\"center\"> "+date+"</td>"
+        + "<td width=\"\" class=\"center\"> "+dateoutput.format(date)+"</td>"
         + "<td class=\"center\"> "+ResolvedBy+" </td>"
         + "<td class=\"center\"> "+ResolvedAt+"</td>"
-        + "<td align=\"center\">"
+        + "<td width=\"500\" align=\"center\">"
         + status
         + "</td>"
         + "<td>"
@@ -459,7 +457,7 @@
                         + "</div>"
                         + "<div class=\"col-md-6 \">"
                             + "<div class=\"form-group form-md-line-input has-error\">\n" +
-"                                                <input type=\"text\" class=\"form-control\" disabled id=\"form_control_1\" value=\""+date+"\">\n" +
+"                                                <input type=\"text\" class=\"form-control\" disabled id=\"form_control_1\" value=\""+dateoutput.format(date)+"\">\n" +
 "                                                <label for=\"form_control_1\">Submission Time</label>\n"
                         + "</div>"
         + "</div>"
@@ -499,7 +497,7 @@
                         + "</div>"
                         + "<div class=\"col-md-6 \">"
                             + "<div class=\"form-group form-md-line-input has-error\">\n" +
-"                                                <input type=\"text\" class=\"form-control\" disabled id=\"form_control_1\" value=\""+checkedat+"\">\n" +
+"                                                <input type=\"text\" class=\"form-control\" disabled id=\"form_control_1\" value=\""+dateoutput.format(checkedat)+"\">\n" +
 "                                                <label for=\"form_control_1\">Checked At</label>\n"
                         + "</div>"
         + "</div>"
@@ -515,7 +513,7 @@
                         + "</div>"
                         + "<div class=\"col-md-6 \">"
                             + "<div class=\"form-group form-md-line-input has-error\">\n" +
-"                                                <input type=\"text\" class=\"form-control\" disabled id=\"form_control_1\" value=\""+checkedat+"\">\n" +
+"                                                <input type=\"text\" class=\"form-control\" disabled id=\"form_control_1\" value=\""+dateoutput.format(checkedat)+"\">\n" +
 "                                                <label for=\"form_control_1\">Checked At</label>\n"
                         + "</div>"
         + "</div>"
@@ -530,7 +528,7 @@
                         + "</div>"
                         + "<div class=\"col-md-6 \">"
                             + "<div class=\"form-group form-md-line-input has-error\">\n" +
-"                                                <input type=\"text\" class=\"form-control\" disabled id=\"form_control_1\" value=\""+solvedat+"\">\n" +
+"                                                <input type=\"text\" class=\"form-control\" disabled id=\"form_control_1\" value=\""+dateoutput.format(solvedat)+"\">\n" +
 "                                                <label for=\"form_control_1\">Solved At</label>\n"
                         + "</div>"
         + "</div>"
@@ -553,7 +551,8 @@
         + "</td>" +
         
 "</tr>\n" +
-"</form>\n");
+
+                 "");
                 }
                     }catch(Exception ex){
                         System.out.println(ex);
@@ -579,14 +578,8 @@
         <!-- END CONTAINER -->
         </div>
         <!-- BEGIN FOOTER -->
-        <div class="page-footer">
-            <div class="page-footer-inner"> 2016 &copy; Developed by Ahsan Mahmood.
-                <a href="http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes" title="Purchase Metronic just for 27$ and get lifetime updates for free" target="_blank">Purchase Metronic!</a>
-            </div>
-            <div class="scroll-to-top">
-                <i class="icon-arrow-up"></i>
-            </div>
-        </div>
+
+        <%@include  file="footer.jsp" %>
         <!-- END FOOTER -->
         <!--[if lt IE 9]>
 <script src="assets/global/plugins/respond.min.js"></script>

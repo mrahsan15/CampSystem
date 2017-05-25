@@ -38,10 +38,12 @@
          
       }
   }
-   
-    ResultSet staffset1 = statement.executeQuery("SELECT Name from campstaff WHERE ID = "+ campstaffid) ;
+    
+    ResultSet staffset1 = statement.executeQuery("SELECT * from campstaff WHERE ID = "+ campstaffid) ;
     staffset1.next();
-    String Name = staffset1.getString("Name");
+    String Name = staffset1.getString("FirstName");
+    String ProfilePicture = staffset1.getString("profilepicture");
+    
     ResultSet staffset2 = statement.executeQuery("SELECT username from login WHERE campstaffID = "+ campstaffid) ;
     staffset2.next();
     String username = staffset2.getString("username");
@@ -88,17 +90,17 @@
     <body class="">
         <div class="page-lock">
             <div class="page-logo">
-                <a class="brand" href="dashboard.jsp"></a>
+                <a class="brand" href=""></a>
                     
             </div>
             <div class="page-body">
-                <img class="page-lock-img" src="assets/layouts/layout/img/avatar.jpg" alt="">
+                <img class="page-lock-img" src="<% out.println(ProfilePicture); %>" alt="">
                 <div class="page-lock-info">
                     <h1><%out.println(Name);%></h1>
                     <span class="locked"> Locked </span>
-                    <form class="form-inline" action="dashboard.jsp" method="post">
+                    <form class="form-inline" action="index.jsp" method="post">
                         <div class="input-group input-medium">
-                            <input type="hidden" name="username" value= <%out.println("\""+username+"\"");%> >
+                            <input type="hidden" name="username" value= <%out.println("\""+username+"\"");%> />
                             <input type="password" class="form-control" name="password" placeholder="Password">
                             <span class="input-group-btn">
                                 <button type="submit" class="btn green icn-only">

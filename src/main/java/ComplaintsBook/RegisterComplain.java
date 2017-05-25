@@ -41,7 +41,7 @@ public class RegisterComplain extends HttpServlet {
             
             while(MaintenanceStaffs.next()){
                 int id = MaintenanceStaffs.getInt("ID");
-                String StaffName = MaintenanceStaffs.getString("Name");
+                String StaffName = MaintenanceStaffs.getString("FirstName");
                 out.println("<option value=\""+id+"\">"+StaffName+"</option>" );
             }
             }catch(Exception ex){

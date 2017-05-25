@@ -61,11 +61,11 @@ public class ComplainRecord extends HttpServlet {
                 
                 
                 ResultSet staffname = connect.createStatement()
-                        .executeQuery("SELECT Name from campstaff WHERE ID = "+complainrecords.getInt("SubmittedBy"));
+                        .executeQuery("SELECT FirstName from campstaff WHERE ID = "+complainrecords.getInt("SubmittedBy"));
                 staffname.next();
                 System.out.println("Working 1 ");
                 
-                String SubmissionBy = staffname.getString("Name");
+                String SubmissionBy = staffname.getString("FirstName");
                 Timestamp date = complainrecords.getTimestamp("DateTime");
                 
                 out.println(

@@ -72,6 +72,14 @@
         <servlet-name>uploadfile</servlet-name>
         <servlet-class>mandays.uploadfile</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>MandaysUpdates</servlet-name>
+        <servlet-class>mandays.MandaysUpdates</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PictureUpdate</servlet-name>
+        <servlet-class>mandays.PictureUpdate</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>tripupdate</servlet-name>
         <url-pattern>/tripupdate</url-pattern>
@@ -143,6 +151,14 @@
     <servlet-mapping>
         <servlet-name>uploadfile</servlet-name>
         <url-pattern>/uploadfile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MandaysUpdates</servlet-name>
+        <url-pattern>/MandaysUpdates</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PictureUpdate</servlet-name>
+        <url-pattern>/PictureUpdate</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

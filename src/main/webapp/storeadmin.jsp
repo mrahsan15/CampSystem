@@ -52,7 +52,7 @@ License: You must have a valid license purchased only from themeforest(the above
                 <!-- BEGIN LOGO -->
                 <div class="page-logo">
                     <a href="dashboard.jsp">
-                        <img src="assets/layouts/layout/img/logo.png" alt="logo" class="logo-default" /> </a>
+                        <img src="" alt="logo" class="logo-default" /> </a>
                     <div class="menu-toggler sidebar-toggler"> </div>
                 </div>
                 <!-- END LOGO -->
@@ -353,7 +353,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
                         <li class="dropdown dropdown-user">
                             <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                                <img alt="" class="img-circle" src="assets/layouts/layout/img/avatar_small.jpg" />
+                                <img alt="" class="img-circle" src="<% out.println(ProfilePicture); %>" />
                                 <span class="username username-hide-on-mobile">
                                     
                                     Nick
@@ -2251,7 +2251,7 @@ License: You must have a valid license purchased only from themeforest(the above
         <!-- BEGIN FOOTER -->
         <div class="page-footer">
             <div class="page-footer-inner"> 2016 &copy; Developed by Ahsan Mahmood.
-                <a href="http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes" title="Purchase Metronic just for 27$ and get lifetime updates for free" target="_blank">Purchase Metronic!</a>
+                <a href="http://apisylux.com" title="" target="_blank">Thumbs Up!</a>
             </div>
             <div class="scroll-to-top">
                 <i class="icon-arrow-up"></i>

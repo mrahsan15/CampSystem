@@ -1,39 +1,32 @@
 <%-- 
-    Document   : FoodOrder
-    Created on : Jan 8, 2017, 12:01:41 PM
+    Document   : myprofile
+    Created on : Feb 7, 2017, 7:01:34 PM
     Author     : ahsan
 --%>
-
-<%@page import="java.util.Iterator"%>
-<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="mandays.menuoutput"%>
-<%@page import="java.sql.Statement"%>
-<%@page import="java.sql.DriverManager"%>
-<%@page import="java.sql.Connection"%>
-<%@page import="java.sql.ResultSet"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-
 <%@include file="cookies.jsp" %>
-<%
+<% 
 Statement statement = connection.createStatement();
 %>
 
 <%
-    SimpleDateFormat QueryDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+String UserDataQuery = "SELECT * from campstaff WHERE ID = "+campstaffid;
+//System.out.println("CAMP STAFF ID: "+campstaffid);
+Statement UserData = connection.createStatement();
+ResultSet UserDataSet = UserData.executeQuery(UserDataQuery);
+UserDataSet.next();
 %>
 
-
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
-<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
-<!--[if !IE]><!-->
+<!-- 
 <html lang="en">
     <!--<![endif]-->
     <!-- BEGIN HEAD -->
 
     <head>
         <meta charset="utf-8" />
-        <title>Camp System - Food Order</title>
+        <title>Camp System | User Profile</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <meta content="" name="description" />
@@ -46,10 +39,16 @@ Statement statement = connection.createStatement();
         <link href="assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css" />
         <link href="assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
         <!-- END GLOBAL MANDATORY STYLES -->
+        <!-- BEGIN PAGE LEVEL PLUGINS -->
+        <link href="assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
+        <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN THEME GLOBAL STYLES -->
         <link href="assets/global/css/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
         <link href="assets/global/css/plugins.min.css" rel="stylesheet" type="text/css" />
         <!-- END THEME GLOBAL STYLES -->
+        <!-- BEGIN PAGE LEVEL STYLES -->
+        <link href="assets/pages/css/profile.min.css" rel="stylesheet" type="text/css" />
+        <!-- END PAGE LEVEL STYLES -->
         <!-- BEGIN THEME LAYOUT STYLES -->
         <link href="assets/layouts/layout/css/layout.min.css" rel="stylesheet" type="text/css" />
         <link href="assets/layouts/layout/css/themes/darkblue.min.css" rel="stylesheet" type="text/css" id="style_color" />
@@ -58,7 +57,7 @@ Statement statement = connection.createStatement();
         <link rel="shortcut icon" href="favicon.ico" /> </head>
     <!-- END HEAD -->
 
-    <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
+    <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-content-white page-sidebar-closed">
         <!-- BEGIN HEADER -->
         <%@include file="header.jsp" %>
         <!-- END HEADER -->
@@ -80,7 +79,7 @@ Statement statement = connection.createStatement();
                     <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
                     <!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
                     <!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
-                    <ul class="page-sidebar-menu  page-header-fixed " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" style="padding-top: 20px">
+                    <ul class="page-sidebar-menu  page-header-fixed page-sidebar-menu-closed " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" style="padding-top: 20px">
                         <!-- DOC: To remove the sidebar toggler from the sidebar you just need to completely remove the below "sidebar-toggler-wrapper" LI element -->
                         <li class="sidebar-toggler-wrapper hide">
                             <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
@@ -88,30 +87,9 @@ Statement statement = connection.createStatement();
                             <!-- END SIDEBAR TOGGLER BUTTON -->
                         </li>
                         <!-- DOC: To remove the search box from the sidebar you just need to completely remove the below "sidebar-search-wrapper" LI element -->
-                        <li class="sidebar-search-wrapper">
-                            <!-- BEGIN RESPONSIVE QUICK SEARCH FORM -->
-                            <!-- DOC: Apply "sidebar-search-bordered" class the below search form to have bordered search box -->
-                            <!-- DOC: Apply "sidebar-search-bordered sidebar-search-solid" class the below search form to have bordered & solid search box -->
-                            <form class="sidebar-search  sidebar-search-bordered" action="page_general_search_3.html" method="POST">
-                                <a href="javascript:;" class="remove">
-                                    <i class="icon-close"></i>
-                                </a>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search...">
-                                    <span class="input-group-btn">
-                                        <a href="javascript:;" class="btn submit">
-                                            <i class="icon-magnifier"></i>
-                                        </a>
-                                    </span>
-                                </div>
-                            </form>
-                            <!-- END RESPONSIVE QUICK SEARCH FORM -->
-                        </li>
-                        
-                        <%
+                        <% 
                         %><%@include file="menu.jsp" %><%
                         %>
-                        
                     </ul>
                     <!-- END SIDEBAR MENU -->
                     <!-- END SIDEBAR MENU -->
@@ -124,188 +102,69 @@ Statement statement = connection.createStatement();
                 <!-- BEGIN CONTENT BODY -->
                 <div class="page-content">
                     <!-- BEGIN PAGE HEADER-->
-                    <!-- BEGIN PAGE BAR -->
-                    <div class="page-bar">
-                        <ul class="page-breadcrumb">
-                            <li>
-                                <a href="dashboard.jsp">Home</a>
-                                <i class="fa fa-circle"></i>
-                            </li>
-                            <li>
-                                <a href="#">Food Mandays</a>
-                                <i class="fa fa-circle"></i>
-                            </li>
-                            <li>
-                                <span>Food Order</span>
-                            </li>
-                        </ul>
-                        <div class="page-toolbar">
-                            <div class="btn-group pull-right">
-                                <button type="button" class="btn green btn-sm btn-outline dropdown-toggle" data-toggle="dropdown"> Actions
-                                    <i class="fa fa-angle-down"></i>
-                                </button>
-                                <ul class="dropdown-menu pull-right" role="menu">
-                                    <li>
-                                        <a href="#">
-                                            <i class="icon-bell"></i> Unused</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="icon-shield"></i> UnUsed</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="icon-user"></i> UnUsed</a>
-                                    </li>
-                                    <li class="divider"> </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="icon-bag"></i> UnUsed</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- BEGIN THEME PANEL -->
                     <!-- END PAGE BAR -->
                     <!-- BEGIN PAGE TITLE-->
-                    <h3 class="page-title"> Food Order
-                        
+                    <h3 class="page-title"> User Profile
+                        <small></small>
                     </h3>
                     <!-- END PAGE TITLE-->
                     <!-- END PAGE HEADER-->
-                    
-                    
                     <div class="row">
-                        <div class="col-md-12">
-                            <!-- BEGIN SAMPLE TABLE PORTLET-->
-                            <div class="portlet box yellow">
-                                <div class="portlet-title">
-                                    <div class="caption">
-                                        <i class="fa fa-comments"></i>Food Details - Dated: <%out.println(new SimpleDateFormat("dd-MMM-yyyy").format(new java.util.Date()));%></div>
-                                    <div class="tools">
-                                        <a href="javascript:;" class="collapse"> </a>
-                                        <a href="#portlet-config" data-toggle="modal" class="config"> </a>
-                                        <a href="javascript:;" class="reload"> </a>
-                                        <a href="javascript:;" class="remove"> </a>
-                                    </div>
-                                </div>
-                                <div class="portlet-body">
-                                    <div class="table-scrollable">
-                                        <table class="table table-bordered table-hover">
-                                            <thead>
-                                                <tr>
-                                                
-                                                <%
-                                                    String currentTimeStamp = "'"+QueryDateFormat.format(new java.util.Date())+ "  00:00:00'";
-                                                    
-                                                    String NationalityQuery = "SELECT * FROM datatypes WHERE Type = 'Nationality'";
-                                                    Statement NationalitySt = connection.createStatement();
-                                                    ResultSet NationalityRs = NationalitySt.executeQuery(NationalityQuery);
-                                                    String NationalitiesID = "";
-                                                    while(NationalityRs.next()){
-                                                        String NationalityID = NationalityRs.getInt("ID")+"";
-                                                        String NationalityMandaysQuery = "SELECT * FROM datarecord WHERE Nationality = "+NationalityID+" AND CheckIn <= "+currentTimeStamp+" AND CheckOut IS NULL";
-                                                        Statement NationalityMandaysSt = connection.createStatement();
-                                                        ResultSet NationalityMandaysRs = NationalityMandaysSt.executeQuery(NationalityMandaysQuery);
-                                                        while(NationalityMandaysRs.next()){
-                                                            NationalitiesID = NationalitiesID+NationalityID+",";
-                                                            System.out.println(NationalitiesID);
-                                                            break;
-                                                        }
-                                                        NationalityMandaysRs.close();
-                                                        NationalityMandaysQuery = "SELECT * FROM datarecord WHERE Nationality = "+NationalityID+" AND CheckIn <= "+currentTimeStamp+" AND CheckOut >= "+currentTimeStamp;
-                                                        NationalityMandaysRs = NationalityMandaysSt.executeQuery(NationalityMandaysQuery);
-                                                        while(NationalityMandaysRs.next()){
-                                                            if(NationalitiesID.contains(NationalityID)){
-                                                                
-                                                            }else{
-                                                            NationalitiesID = NationalitiesID+NationalityID+",";
-                                                            break;
-                                                            }
-                                                        }
-                                                    }
-                                                %>
-                                                <%
-                                                    String NationalitiesIDs = "";
-                                                    String[] NationalityHeaders = NationalitiesID.split(",");
-                                                    
-                                                %>
-                                                
-                                                <th>  </th>
-                                                <%
-                                                    
-                                                    System.out.println("Nationality ID: "+NationalitiesID);
-                                                    for(int i = 0; i < NationalityHeaders.length; i++){
-                                                        out.println("<th>");
-                                                        String NationalityName = "SELECT * FROM datatypes WHERE ID = "+ NationalityHeaders[i];
-                                                        ResultSet NationalityNameSet = connection.createStatement().executeQuery(NationalityName);
-                                                        NationalityNameSet.next();
-                                                        out.println(NationalityNameSet.getString("Value"));
-                                                        out.println("</th>");
-                                                        NationalityNameSet.close();
-                                                    }
-                                                %>
-                                                
-                                                <th>Total</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <%
-                                                    int counttotal = 0;
-                                                    String FoodTypesQuery = "SELECT * FROM datatypes WHERE Type = 'FoodType'";
-                                                    Statement FoodTypesSt = connection.createStatement();
-                                                    ResultSet FoodTypesRs = FoodTypesSt.executeQuery(FoodTypesQuery);
-                                                    while(FoodTypesRs.next()){
-                                                        out.println("<tr>");    
-                                                        out.println("<td>"+FoodTypesRs.getString("Value")+"</td>");
-                                                        for (int i = 0;i < NationalityHeaders.length; i++){
-                                                            int count = 0;
-                                                            String NationalityFoodTypeQuery = "SELECT * FROM datarecord WHERE FoodCategory = "+FoodTypesRs.getInt("ID")+" AND Nationality = "+NationalityHeaders[i]+" AND CheckIn <= "+currentTimeStamp+" AND CheckOut IS NULL ORDER BY CheckOut DESC";
-                                                            Statement NationalityFoodTypeSt = connection.createStatement();
-                                                            ResultSet NationalityFoodTypeRs = NationalityFoodTypeSt.executeQuery(NationalityFoodTypeQuery);
-                                                            while(NationalityFoodTypeRs.next()){
-                                                                count++;
-                                                            }
-                                                            NationalityFoodTypeRs.close();
-                                                            
-                                                            NationalityFoodTypeQuery = "SELECT * FROM datarecord WHERE FoodCategory = "+FoodTypesRs.getInt("ID")+" AND Nationality = "+NationalityHeaders[i]+" AND CheckIn <= "+currentTimeStamp+" AND CheckOut >= "+currentTimeStamp+" ORDER BY CheckOut DESC";
-                                                            NationalityFoodTypeRs = NationalityFoodTypeSt.executeQuery(NationalityFoodTypeQuery);
-                                                            while(NationalityFoodTypeRs.next()){
-                                                                count++;
-                                                            }
-                                                            counttotal+= count;
-                                                            NationalityFoodTypeRs.close();
-                                                            
-                                                            String colorClass = "";
-                                                            if(count == 0){
-                                                                colorClass = "active";
-                                                            }else if(count > 0 && count < 100){
-                                                                colorClass = "warning";
-                                                            }else if(count >= 100 && count < 1000){
-                                                                colorClass = "danger";
-                                                            }else {
-                                                                colorClass = "success";
-                                                            }
-                                                            out.println("<td align=\"center\" class=\""+colorClass+"\">"+count+"</td>");
-                                                        }
-                                                        out.println("<td align=\"center\" class=\"success\"><b>"+counttotal+"</b></td>");
-                                                        counttotal = 0 ;
-                                                        
-                                                        out.println("</tr>");   
-                                                    }
-                                                %>
-                                                
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- END SAMPLE TABLE PORTLET-->
-                        </div>
                         
+                        <div class="col-lg-6">
+                            <!-- BEGIN PROFILE SIDEBAR -->
+                            <div class="profile-sidebar">
+                                <!-- PORTLET MAIN -->
+                                <div class="portlet light profile-sidebar-portlet ">
+                                    <!-- SIDEBAR USERPIC -->
+                                    <div class="profile-userpic">
+                                        
+                                        <img src="<% out.println(UserDataSet.getString("ProfilePicture")); %>" class="img-responsive" alt=""> </div>
+                                        <% //System.out.println(UserDataSet.getString("ProfilePicture"));%>
+                                    <!-- END SIDEBAR USERPIC -->
+                                    <!-- SIDEBAR USER TITLE -->
+                                    <div class="profile-usertitle">
+                                        <div class="profile-usertitle-name"><% out.println(UserDataSet.getString("FirstName")); %></div>
+                                        <div class="profile-usertitle-job"><% out.println(UserDataSet.getString("JobTitle")); %></div>
+                                    </div>
+                                    <!-- END SIDEBAR USER TITLE -->
+                                    <!-- SIDEBAR BUTTONS -->
+                                    <div class="profile-userbuttons">
+                                        <button type="button" class="btn btn-circle green btn-sm">Follow</button>
+                                        <button type="button" class="btn btn-circle red btn-sm">Message</button>
+                                    </div>
+                                    <!-- END SIDEBAR BUTTONS -->
+                                    <!-- SIDEBAR MENU -->
+                                    <div class="profile-usermenu">
+                                        <ul class="nav">
+                                            <li class="active">
+                                                <a href="myprofile.jsp">
+                                                    <i class="icon-home"></i> Overview </a>
+                                            </li>
+                                            <li>
+                                                <a href="profilesettings.jsp">
+                                                    <i class="icon-settings"></i> Account Settings </a>
+                                            </li>
+                                            <li>
+                                                <a href="">
+                                                    <i class="icon-info"></i> Help </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <!-- END MENU -->
+                                </div>
+                                <!-- END PORTLET MAIN -->
+                                <!-- PORTLET MAIN -->
+                                
+                                <!-- END PORTLET MAIN -->
+                            </div>
+                            <!-- END BEGIN PROFILE SIDEBAR -->
+                            <!-- BEGIN PROFILE CONTENT -->
+                            
+                            <!-- END PROFILE CONTENT -->
+                        </div>
                     </div>
-                    
-                    
                 </div>
                 <!-- END CONTENT BODY -->
             </div>
@@ -897,9 +756,19 @@ Statement statement = connection.createStatement();
         <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
         <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
         <!-- END CORE PLUGINS -->
+        <!-- BEGIN PAGE LEVEL PLUGINS -->
+        <script src="assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
+        <script src="assets/global/plugins/jquery.sparkline.min.js" type="text/javascript"></script>
+        <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
+        <script src="assets/global/plugins/gmaps/gmaps.min.js" type="text/javascript"></script>
+        <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN THEME GLOBAL SCRIPTS -->
         <script src="assets/global/scripts/app.min.js" type="text/javascript"></script>
         <!-- END THEME GLOBAL SCRIPTS -->
+        <!-- BEGIN PAGE LEVEL SCRIPTS -->
+        <script src="assets/pages/scripts/profile.min.js" type="text/javascript"></script>
+        <script src="assets/pages/scripts/timeline.min.js" type="text/javascript"></script>
+        <!-- END PAGE LEVEL SCRIPTS -->
         <!-- BEGIN THEME LAYOUT SCRIPTS -->
         <script src="assets/layouts/layout/scripts/layout.min.js" type="text/javascript"></script>
         <script src="assets/layouts/layout/scripts/demo.min.js" type="text/javascript"></script>
@@ -907,4 +776,4 @@ Statement statement = connection.createStatement();
         <!-- END THEME LAYOUT SCRIPTS -->
     </body>
 
-    </html>
+</html>

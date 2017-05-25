@@ -8,39 +8,7 @@
 <!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
 <!--[if !IE]><!-->
 
-<% Class.forName("com.mysql.jdbc.Driver"); 
-int campstaffid = 0;        
-    Connection connection = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/campsystem", "root", "root");
-
-
-    Statement statement = connection.createStatement();
-Cookie cookie = null;
-        Cookie[] cookies = null;
-        // Get an array of Cookies associated with this domain
-        cookies = request.getCookies();
-        int logged= 0;
-    
-        if( cookies != null ){
-           for (int i = 0; i < cookies.length; i++){
-              cookie = cookies[i];
-              if((cookie.getName()).equals("loggedin")){
-                  if(cookie.getValue().equals("true")){
-                      for (int j = 0; j < cookies.length; j++){
-                        cookie = cookies[j];
-                        if((cookie.getName()).equals("campstaffid")){
-                            
-                            campstaffid = Integer.parseInt(cookie.getValue());
-                            logged++;
-                            
-                        }
-                     }
-                  }
-              }
-           }
-        }
- %>
-    
+<%@include file="cookies.jsp" %>    
 
 
 <html lang="en">
@@ -82,7 +50,7 @@ Cookie cookie = null;
                 <!-- BEGIN LOGO -->
                 <div class="page-logo">
                     <a href="dashboard.jsp">
-                        <img src="assets/layouts/layout/img/logo.png" alt="logo" class="logo-default" /> </a>
+                        <img src="" alt="logo" class="logo-default" /> </a>
                     <div class="menu-toggler sidebar-toggler"> </div>
                 </div>
                 <!-- END LOGO -->
@@ -383,14 +351,14 @@ Cookie cookie = null;
                         <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
                         <li class="dropdown dropdown-user">
                             <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                                <img alt="" class="img-circle" src="assets/layouts/layout/img/avatar_small.jpg" />
+                                <img alt="" class="img-circle" src="<% out.println(ProfilePicture); %>" />
                                 <span class="username username-hide-on-mobile">
                                     
                                     <% 
                                         ResultSet staffdetails = statement.executeQuery("SELECT * from campstaff WHERE ID =" + campstaffid);
                                         staffdetails.next();
-                                        String Name[] = staffdetails.getString("Name").split(" ");
-                                        out.println(Name[0]);
+                                        String Name = staffdetails.getString("FirstName");
+                                        out.println(Name);
                                     %>
                                 <i class="fa fa-angle-down"></i>
                             </a>

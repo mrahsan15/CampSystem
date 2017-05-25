@@ -53,9 +53,9 @@ public class complainfwd extends HttpServlet {
             int forwardedto = Integer.parseInt(request.getParameter("forwardedto"));
             
             String query = "INSERT INTO complainbook (ID, Description, Area, DateTime,SubmittedBy,"
-                    + " ForwardedTo, checked, checkedat,solved, solvedat, solvedby) "
+                    + " ForwardedTo, checked, checkedat,solved, solvedat, solvedby, Archived) "
                     + "VALUES (NULL, '"+complaindescription+"', '"+area+"', "
-                    + "CURRENT_TIMESTAMP, "+submittedby+" , "+forwardedto+", 0 , NULL, 0, NULL, NULL)"
+                    + "CURRENT_TIMESTAMP, "+submittedby+" , "+forwardedto+", 0 , NULL, 0, NULL, NULL,0)"
                     + "";
             
             Connection connect = new DBConnectivity().ConnectSql();

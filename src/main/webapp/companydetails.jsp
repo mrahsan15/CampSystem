@@ -10,85 +10,10 @@
 <%@page import="java.sql.Statement"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<% Class.forName("com.mysql.jdbc.Driver"); %>
-
-<% 
-    int campstaffid = 0;
-    Connection connection = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/campsystem", "root", "root");
-
-    Statement statement = connection.createStatement();
-        Cookie cookie = null;
-        Cookie[] cookies = null;
-        // Get an array of Cookies associated with this domain
-        cookies = request.getCookies();
-        int logged= 0;
-    
-        if( cookies != null ){
-            
-           for (int i = 0; i < cookies.length; i++){
-              cookie = cookies[i];
-              if((cookie.getName()).equals("loggedin")){
-                  if(cookie.getValue().equals("true")){
-                      for (int j = 0; j < cookies.length; j++){
-                          
-                        cookie = cookies[j];
-                        if((cookie.getName()).equals("campstaffid")){
-                            
-                            campstaffid = Integer.parseInt(cookie.getValue());
-                            logged++;
-                            
-                        }
-                     }
-                  }
-              }
-           }
-        }
-        if(logged == 0){
-            System.out.println("Credentials Verification!");
-            String username = request.getParameter("username");  
-            String password = request.getParameter("password");
-            ResultSet resultset = 
-                statement.executeQuery("select * from login where username = '" + username + "'") ; 
-            int found = 0;
-            System.out.println("Result Set Called!");
-            while(resultset.next()){
-                String dbusername = resultset.getString("username");
-                String dbpassword = resultset.getString("password");
-                if(username.equals(dbusername ) && password.equals(dbpassword)){
-                    campstaffid = resultset.getInt("campstaffID");
-                    System.out.println("ResultSet Staff ID: "+resultset.getInt("campstaffID"));
-                    found++;
-                    Cookie campstaffidcookie = new Cookie("campstaffid", ""+campstaffid);
-                    Cookie loggedincookie = new Cookie("loggedin","true");
-
-                    // Set expiry date after 24 Hrs for both the cookies.
-                    campstaffidcookie.setMaxAge(60*60*24); 
-                    loggedincookie.setMaxAge(60*60*24); 
-
-                    // Add both the cookies in the response header.
-                    response.addCookie( campstaffidcookie );
-                    response.addCookie( loggedincookie );
-                    }
-                }
-                if(found == 0){
-                    response.sendRedirect("login.jsp");
-                }
-        
-    }
-    
-        ResultSet rs = statement.executeQuery("SELECT JobTitle from campstaff WHERE ID = "+campstaffid);
-        rs.next();
-        String JobTitle = rs.getString("JobTitle");
-        if(JobTitle.equals("Maintenance Incharge")){
-            response.sendRedirect("complainreview.jsp");
-        }else if(JobTitle.equals("Store Keeper")){
-            response.sendRedirect("inventory.jsp");
-        }
-            
-
-        %>
-
+<%@include file="cookies.jsp" %>
+<%
+Statement statement = connection.createStatement()  ;
+%>
 
 <!DOCTYPE html>
 
@@ -131,65 +56,7 @@
 
     <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
         <!-- BEGIN HEADER -->
-        <div class="page-header navbar navbar-fixed-top">
-            <!-- BEGIN HEADER INNER -->
-            <div class="page-header-inner ">
-                <!-- BEGIN LOGO -->
-                <div class="page-logo">
-                    <a href="dashboard.jsp">
-                        <img src="assets/layouts/layout/img/logo.png" alt="logo" class="logo-default" /> </a>
-                    <div class="menu-toggler sidebar-toggler"> </div>
-                </div>
-                <!-- END LOGO -->
-                <!-- BEGIN RESPONSIVE MENU TOGGLER -->
-                <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse"> </a>
-                <!-- END RESPONSIVE MENU TOGGLER -->
-                <!-- BEGIN TOP NAVIGATION MENU -->
-                <div class="top-menu">
-                    <ul class="nav navbar-nav pull-right">
-                        <!-- BEGIN USER LOGIN DROPDOWN -->
-                        <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
-                        <li class="dropdown dropdown-user">
-                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                                <img alt="" class="img-circle" src="assets/layouts/layout/img/avatar3_small.jpg" />
-                                <span class="username username-hide-on-mobile">
-                                    
-                                    <% 
-                                        ResultSet staffdetails = statement.executeQuery("SELECT * from campstaff WHERE ID =" + campstaffid);
-                                        staffdetails.next();
-                                        String Name[] = staffdetails.getString("Name").split(" ");
-                                        out.println(Name[0]);
-                                    %>
-                                    
-                                <i class="fa fa-angle-down"></i>
-                                </span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-default">
-                                <li>
-                                    <a href="lockscreen.jsp">
-                                        <i class="icon-lock"></i> Lock Screen </a>
-                                </li>
-                                <li>
-                                    <a href="login.jsp">
-                                        <i class="icon-key"></i> Log Out </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <!-- END USER LOGIN DROPDOWN -->
-                        <!-- BEGIN QUICK SIDEBAR TOGGLER -->
-                        <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
-                        <li class="dropdown dropdown-quick-sidebar-toggler">
-                            <a href="javascript:;" class="dropdown-toggle">
-                                <i class="icon-logout"></i>
-                            </a>
-                        </li>
-                        <!-- END QUICK SIDEBAR TOGGLER -->
-                    </ul>
-                </div>
-                <!-- END TOP NAVIGATION MENU -->
-            </div>
-            <!-- END HEADER INNER -->
-        </div>
+        <%@include file="header.jsp" %>
         <!-- END HEADER -->
         <!-- BEGIN HEADER & CONTENT DIVIDER -->
         <div class="clearfix"> </div>
@@ -237,7 +104,7 @@
                             <!-- END RESPONSIVE QUICK SEARCH FORM -->
                         </li>
                         <%
-                        new menuoutput(campstaffid, out);
+                        %><%@include file="menu.jsp" %><%
                         %>
                         
                     </ul>

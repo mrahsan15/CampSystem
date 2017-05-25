@@ -45,20 +45,20 @@ public class complainreview extends HttpServlet {
             }
             String Description = complainDetail.getString("Description");
             
-            ResultSet submittedByset = connect.createStatement().executeQuery("SELECT Name from campstaff WHERE ID = "+SubmittedByNumber);
+            ResultSet submittedByset = connect.createStatement().executeQuery("SELECT FirstName from campstaff WHERE ID = "+SubmittedByNumber);
             submittedByset.next();
-            String SubmittedByName = submittedByset.getString("Name");
+            String SubmittedByName = submittedByset.getString("FirstName");
             
-            ResultSet ForwardedToset = connect.createStatement().executeQuery("SELECT Name from campstaff WHERE ID = "+ForwardedToNumber);
+            ResultSet ForwardedToset = connect.createStatement().executeQuery("SELECT FirstName from campstaff WHERE ID = "+ForwardedToNumber);
             ForwardedToset.next();
-            String ForwardedToName = ForwardedToset.getString("Name");
+            String ForwardedToName = ForwardedToset.getString("FirstName");
             
             String ResolvedByHTML = "";
             ResultSet ResolvedByset = connect.createStatement().executeQuery("SELECT * from campstaff WHERE Role = 4");
             while(ResolvedByset.next()){
                 ResolvedByHTML = ResolvedByHTML+ "<option value=\""
                         +ResolvedByset.getString("ID")+"\">"
-                        +ResolvedByset.getString("Name")+"</option>";
+                        +ResolvedByset.getString("FirstName")+"</option>";
                 
             }
             

@@ -1,21 +1,7 @@
-﻿<!DOCTYPE html>
-<!-- 
-Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.3.6
-Version: 4.5.4
-Author: KeenThemes
-Website: http://www.keenthemes.com/
-Contact: support@keenthemes.com
-Follow: www.twitter.com/keenthemes
-Like: www.facebook.com/keenthemes
-Purchase: http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes
-License: You must have a valid license purchased only from themeforest(the above link) in order to legally use the theme for your project.
--->
-<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
-<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
-<!--[if !IE]><!-->
 <%
    Cookie cookie = null;
    Cookie[] cookies = null;
+   
    // Get an array of Cookies associated with this domain
    cookies = request.getCookies();
    if( cookies != null ){
@@ -70,18 +56,22 @@ License: You must have a valid license purchased only from themeforest(the above
         <link rel="shortcut icon" href="favicon.ico" /> </head>
     <!-- END HEAD -->
 
-    <body class=" login">
+    <body class="login">
         <!-- BEGIN LOGO -->
         <div class="logo">
-            <a href="dashboard.jsp">
-                <img src="assets/pages/img/logo-big.png" alt="" /> </a>
+            <a href="">
+                <!--<img src="assets/pages/img/logo-big.png" alt="" />--> 
+                <!--<img src= <% out.println(""); %> alt="" />--> 
+            </a>
         </div>
         <!-- END LOGO -->
         <!-- BEGIN LOGIN -->
+        
         <div class="content">
             <!-- BEGIN LOGIN FORM -->
-            <form class="login-form" action="dashboard.jsp" method="post">
-                <h3 class="form-title font-green">Sign In</h3>
+            <h3 class="form-title font-green">Sign In</h3>
+            <form class="login-form" action="index.jsp" method="post">
+                
                 <div class="alert alert-danger display-hide">
                     <button class="close" data-close="alert"></button>
                     <span> Enter any username and password. </span>
@@ -124,7 +114,7 @@ License: You must have a valid license purchased only from themeforest(the above
             </form>
             <!-- END LOGIN FORM -->
             <!-- BEGIN FORGOT PASSWORD FORM -->
-            <form class="forget-form" action="dashboard.jsp" method="post">
+            <form class="forget-form" action="" method="post">
                 <h3 class="font-green">Forget Password ?</h3>
                 <p> Enter your e-mail address below to reset your password. </p>
                 <div class="form-group">
@@ -417,7 +407,7 @@ License: You must have a valid license purchased only from themeforest(the above
             </form>
             <!-- END REGISTRATION FORM -->
         </div>
-        <div class="copyright"> 2016 © Developed by Ahsan Mahmood. </div>
+        <div class="copyright"> 2016 � Developed by Ahsan Mahmood. </div>
         <!--[if lt IE 9]>
 <script src="assets/global/plugins/respond.min.js"></script>
 <script src="assets/global/plugins/excanvas.min.js"></script> 
