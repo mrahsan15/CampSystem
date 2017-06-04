@@ -378,31 +378,7 @@ String ResolvedByHTML = "";
                                         <i class="icon-settings font-red-sunglo"></i>
                                         <span class="caption-subject bold uppercase">Complain Details</span>
                                     </div>
-                                    <div class="actions">
-                                        <div class="btn-group">
-                                            <a class="btn btn-sm green dropdown-toggle" href="javascript:;" data-toggle="dropdown"> Actions
-                                                <i class="fa fa-angle-down"></i>
-                                            </a>
-                                            <ul class="dropdown-menu pull-right">
-                                                <li>
-                                                    <a data-toggle="modal" href="#resolvetab">
-                                                        <i class="fa fa-pencil"></i>Resolve</a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:;">
-                                                        <i class="fa fa-trash-o"></i> Delete </a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:;">
-                                                        <i class="fa fa-ban"></i> Ban </a>
-                                                </li>
-                                                <li class="divider"> </li>
-                                                <li>
-                                                    <a href="javascript:;"> Make admin </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
+                                    
                                 </div>
                                 <div class="modal fade" id="resolvetab" tabindex="-1" role="basic" aria-hidden="true">
                                         <div class="modal-dialog">

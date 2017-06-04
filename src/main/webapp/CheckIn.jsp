@@ -96,9 +96,7 @@ Statement statement = connection.createStatement();
                             </form>
                             <!-- END RESPONSIVE QUICK SEARCH FORM -->
                         </li>
-                        <%
-                        %><%@include file="menu.jsp" %><%
-                        %>
+                        <%@include file="menu.jsp" %>
                     </ul>
                 </div>
                 <!-- END SIDEBAR -->
@@ -150,6 +148,7 @@ Statement statement = connection.createStatement();
                                 <div class="portlet-body form">
                                     <form  action="checkin" method="post">
                                         <div class="form-body">
+                                            <!--Full Name text Field to the Person Check In-->
                                             <div class="form-group form-md-line-input">
                                                 <input type="text" name="fullname" class="form-control" id="form_control_1" placeholder="Enter your name">
                                                 <label for="form_control_1">Full Name</label>
@@ -160,9 +159,9 @@ Statement statement = connection.createStatement();
                                                     <div class="form-group form-md-line-input has-info">
                                                         <!--Room List Selection field--> 
                                                         <select class="form-control" id="form_control_1" name="roomno">
+                                                            <!--Room Number Drop Down List for Check In-->
                                                             <option value=""></option>
                                                             <%
-                    
                                                                 try{
                                                                     Statement roomnumber = connection.createStatement();
                                                                     ResultSet roomnumberset = roomnumber.executeQuery("SELECT * from roomlist");
@@ -182,7 +181,9 @@ Statement statement = connection.createStatement();
                                                 </div>
                                                 <div class="col-md-3 ">
                                                     <div class="form-group form-md-line-input has-info" >
+                                                        <!--Room Type Selection field--> 
                                                         <select class="form-control" id="form_control_1" name="roomcat">
+                                                            <!--Room Category Drop down list for Check in-->
                                                             <option value=""></option>
                                                                 <%
                                                                     try{
@@ -203,8 +204,10 @@ Statement statement = connection.createStatement();
                                                 </div>
                                                 <div class="col-md-3 ">
                                                     <div class="form-group form-md-line-input has-info">
+                                                        <!--Food category Selection List-->
                                                         <select class="form-control" id="form_control_1" name="foodcat">
                                                             <option value=""></option>
+                                                            <!--Food Category Drop down list for Check In-->
                                                             <%
                                                                 try{
                                                                     Statement foodcat = connection.createStatement();
@@ -224,8 +227,10 @@ Statement statement = connection.createStatement();
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3 ">
-                                                    <div class="form-group form-md-line-input has-info">    
+                                                    <div class="form-group form-md-line-input has-info">   
+                                                        <!--Nationality Selection List-->
                                                         <select class="form-control" id="form_control_1" name="nationality">
+                                                            <!--Nationality Drop Down List for Check In-->
                                                             <option value=""></option>
                                                             <%
                                                                 try{
@@ -249,6 +254,7 @@ Statement statement = connection.createStatement();
                                             
                                             <div class="row">
                                                 <div class="col-md-6">
+                                                    <!--Employement Batch Number for Employee-->
                                                     <div class="form-group form-md-line-input">
                                                         <input type="text" class="form-control" name="fileno" id="form_control_1" placeholder="Employe ID">
                                                         <label for="form_control_1">Enter File#</label>
@@ -257,6 +263,7 @@ Statement statement = connection.createStatement();
                                                 </div>
                                                 
                                                 <div class="col-md-3">
+                                                    <!--Bathroom Type Radio button-->
                                                     <div class="form-group form-md-radios">
                                                         <label>Bathroom Type</label>
                                                         <div class="md-radio-inline">
@@ -282,6 +289,7 @@ Statement statement = connection.createStatement();
                                             <div class="row">
                                                 <div class="col-md-6 ">
                                                     <div class="form-group form-md-line-input has-info">
+                                                        <!--Company Name Selection Field-->
                                                         <select class="form-control" id="form_control_1" name="companyname">
                                                             <option value=""></option>
                                                             <%
@@ -303,6 +311,7 @@ Statement statement = connection.createStatement();
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6">
+                                                    <!--Check In Selection for Person Check In-->
                                                     <div class="form-group form-md-line-input">
                                                         <input type="date" class="form-control" id="form_control_1" name="checkin" placeholder="Check In Date">
                                                         <label for="form_control_1">Check In Date</label>
@@ -895,13 +904,8 @@ Statement statement = connection.createStatement();
             <!-- END QUICK SIDEBAR -->
         </div>
         <!-- END CONTAINER -->
-        <!-- BEGIN FOOTER --><div class="page-footer">
-            <div class="page-footer-inner"> 2016 &copy; Camp System by Ahsan Mahmood.                
-            </div>
-            <div class="scroll-to-top">
-                <i class="icon-arrow-up"></i>
-            </div>
-        </div>
+        <!-- BEGIN FOOTER -->
+        <%@include file="footer.jsp" %>
         <!-- END FOOTER -->
         <!--[if lt IE 9]>
 <script src="assets/global/plugins/respond.min.js"></script>

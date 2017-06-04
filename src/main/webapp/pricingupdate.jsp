@@ -269,7 +269,8 @@ Statement statement = connection.createStatement();
                                             
                                         </div>
                                         <div class="form-actions noborder">
-                                            <button type="submit" class="btn blue">Submit</button>
+                                            <button type="submit" class="btn blue" name="submit" value="Submit & Add More">Submit & Add More</button>
+                                            <button type="submit" class="btn blue" name="submit" value="Submit & Exit">Submit & Exit</button>
                                             <button type="button" class="btn default">Cancel</button>
                                         </div>
                                     </form>

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package mandays;
 
 import java.io.IOException;
@@ -19,15 +14,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class checkin extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -46,14 +33,12 @@ public class checkin extends HttpServlet {
             
             int nationality = Integer.parseInt(request.getParameter("nationality"));
             
-            
             String fileno = request.getParameter("fileno");
             System.out.println("Done " + fileno);
             int companyname = Integer.parseInt(request.getParameter("companyname"));
             System.out.println("Done " + companyname);
             String checkin = request.getParameter("checkin");
             System.out.println("Done " + checkin);
-            
             
             String UpdateQuery = "";
             
@@ -77,8 +62,8 @@ public class checkin extends HttpServlet {
                 int updated = con.createStatement().executeUpdate(updatequery);
                 response.sendRedirect("mandaysdata.jsp");
             }catch(Exception ex){
-            System.out.println(ex);
-        }
+                System.out.println(ex);
+            }
         }
     }
 

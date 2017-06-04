@@ -203,11 +203,11 @@ Statement statement = connection.createStatement();
                                 <i class="fa fa-circle"></i>
                             </li>
                             <li>
-                                <a href="#">Blank Page</a>
+                                <a href="#">Mandays System</a>
                                 <i class="fa fa-circle"></i>
                             </li>
                             <li>
-                                <span>Page Layouts</span>
+                                <span>Guest Companies</span>
                             </li>
                         </ul>
                         <div class="page-toolbar">
@@ -285,13 +285,21 @@ Statement statement = connection.createStatement();
                                                             Timestamp checkin = guestCompaniesSet.getTimestamp("joinedsince");
                                                             SimpleDateFormat standard = new SimpleDateFormat("dd-MMM-yyyy");
                                                             String JoinedSince = standard.format(checkin);
+                                                            int activecompany =  guestCompaniesSet.getInt("active");
                                                             out.println("<tr>");
                                                             out.println("<td>"+id+"</td>");
                                                             out.println("<td>"+CompanyName+"</td>");
                                                             out.println("<td>"+JoinedSince+"</td>");
-                                                            out.println("<td>"
-                                                                    + "<span class=\"label label-sm label-success\"> Approved </span>"
+                                                            if(activecompany == 0){
+                                                                out.println("<td>"
+                                                                    + "<span class=\"label label-sm label-danger\"> Inactive </span>"
                                                                     + "</td>");
+                                                            }else{
+                                                                out.println("<td>"
+                                                                    + "<span class=\"label label-sm label-success\"> Active </span>"
+                                                                    + "</td>");
+                                                            }
+                                                            
                                                             out.println("</tr>");
                                                     }
                                                 }catch(Exception ex){

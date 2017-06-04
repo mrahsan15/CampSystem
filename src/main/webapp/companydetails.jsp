@@ -127,11 +127,11 @@ Statement statement = connection.createStatement()  ;
                                 <i class="fa fa-circle"></i>
                             </li>
                             <li>
-                                <a href="#">Tables</a>
+                                <a href="#">Mandays System</a>
                                 <i class="fa fa-circle"></i>
                             </li>
                             <li>
-                                <span>Static Tables</span>
+                                <span>Company Details</span>
                             </li>
                         </ul>
                         <div class="page-toolbar">
@@ -205,6 +205,10 @@ Statement statement = connection.createStatement()  ;
                                                             out.println("<th data-align=\"center\">"+RoomTypeRs.getString("Value")+"</th>");
                                                         }
                                                         String[] RoomTypeHeaders = RoomTypeHeader.split(",");
+                                                        int[] RoomTypeTotalPersons = new int[RoomTypeHeaders.length];
+                                                        for(int i = 0; i < RoomTypeTotalPersons.length; i++){
+                                                            RoomTypeTotalPersons[i] = 0;
+                                                        }
 //                                                          for(int i = 0; i < NationalityHeaders.length; i++){
 ////                                                            
 ////                                                        }
@@ -218,15 +222,13 @@ Statement statement = connection.createStatement()  ;
                                                     
                                                     <%
                                                         int companycount = 1;
+                                                        
                                                         String CompanyQuery = "SELECT * FROM guestcompanies ORDER BY guestcompanies.Name ASC";
                                                         Statement CompanySt = connection.createStatement();
                                                         ResultSet CompanyRs = CompanySt.executeQuery(CompanyQuery);
                                                         while(CompanyRs.next()){
-                                                            
                                                             int CompanyID = CompanyRs.getInt("ID");
-                                                            
                                                             String CompanyName = CompanyRs.getString("Name");
-                                                            
                                                             int totalperson = 0;
                                                             String CompanyDetailsQuery1 = "SELECT * FROM datarecord WHERE CompanyName = "+CompanyID+" AND CheckIn <= CURRENT_TIMESTAMP AND CheckOut IS NULL ORDER BY CheckOut DESC";
                                                             Statement CompanyDetailsSt = connection.createStatement();
@@ -247,26 +249,30 @@ Statement statement = connection.createStatement()  ;
                                                                     int counttype = 0;
                                                                     while(CompanyRoomRs.next()){
                                                                         counttype++;
-                                                                        
                                                                     }
                                                                     if(counttype== 0){
                                                                         out.println("<td></td>");
-                                                                        
-//                                                                        System.out.println(counttype);
                                                                     }else{
                                                                         out.println("<td>"+counttype+"</td>");
-                                                                        
+                                                                        RoomTypeTotalPersons[i] = RoomTypeTotalPersons[i]+counttype;
                                                                     }
-                                                                    
                                                                 }
                                                                 out.println("<td><b>"+totalperson+"</b></td>");
                                                             }
                                                             totalperson = 0;
                                                             out.println("</tr>");
                                                         }
+                                                        out.println("<tr>");
+                                                        out.println("<td>"+companycount+"</td>");
+                                                        out.println("<td><b>Total</b></td>");
+                                                        int TotalOfTotal = 0;
+                                                        for(int i = 0;i< RoomTypeTotalPersons.length;i++){
+                                                            out.println("<td><b>"+RoomTypeTotalPersons[i]+"</b></td>");
+                                                            TotalOfTotal += RoomTypeTotalPersons[i];
+                                                        }
+                                                        out.println("<td><b>"+TotalOfTotal+"</b></td>");
+                                                        out.println("</tr>");
                                                         %>
-                                                        
-                                                    
                                                 </tbody>
                                             </table>
                                         </div>

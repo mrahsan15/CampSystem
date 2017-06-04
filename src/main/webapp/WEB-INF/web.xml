@@ -80,6 +80,10 @@
         <servlet-name>PictureUpdate</servlet-name>
         <servlet-class>mandays.PictureUpdate</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>updatestats</servlet-name>
+        <servlet-class>mandays.updatestats</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>tripupdate</servlet-name>
         <url-pattern>/tripupdate</url-pattern>
@@ -159,6 +163,10 @@
     <servlet-mapping>
         <servlet-name>PictureUpdate</servlet-name>
         <url-pattern>/PictureUpdate</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>updatestats</servlet-name>
+        <url-pattern>/updatestats</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

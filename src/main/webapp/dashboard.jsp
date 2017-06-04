@@ -1,3 +1,4 @@
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="mandays.menuoutput"%>
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
@@ -27,9 +28,7 @@ Statement statement = connection.createStatement();
 
 
 <html lang="en">
-    <!--<![endif]-->
-    <!-- BEGIN HEAD -->
-
+    
     <head>
         <meta charset="utf-8" />
         <title>CAMP SYSTEM | Dashboard</title>
@@ -46,6 +45,7 @@ Statement statement = connection.createStatement();
         <link href="assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
         <!-- END GLOBAL MANDATORY STYLES -->
         <!-- BEGIN PAGE LEVEL PLUGINS -->
+        <link href="assets/global/plugins/ladda/ladda-themeless.min.css" rel="stylesheet" type="text/css" />
         <link href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css" rel="stylesheet" type="text/css" />
         <link href="assets/global/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.css" rel="stylesheet" type="text/css" />
         <link href="assets/global/plugins/morris/morris.css" rel="stylesheet" type="text/css" />
@@ -132,13 +132,25 @@ Statement statement = connection.createStatement();
             <div class="page-content-wrapper">
                 <!-- BEGIN CONTENT BODY -->
                 <div class="page-content">
+                    
                     <!-- BEGIN PAGE HEADER-->
+                    <div class="page-toolbar">
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-primary mt-ladda-btn ladda-button" 
+                                    onclick="window.location = 'updatestats'";
+                                    data-style="expand-right">
+                                <span class="ladda-label">Update Stats</span>
+                            </button>
+                        </div>
+                    </div>
                     <!-- BEGIN THEME PANEL -->
+                    
                     <!-- END PAGE BAR -->
                     <!-- BEGIN PAGE TITLE-->
                     <h3 class="page-title"> Dashboard
                         <small>dashboard & statistics</small>
                     </h3>
+                    
                     <!-- END PAGE TITLE-->
                     <!-- END PAGE HEADER-->
                     <!-- BEGIN DASHBOARD STATS 1-->
@@ -179,7 +191,50 @@ Statement statement = connection.createStatement();
                                 </div>
                                 <div class="details">
                                     <div class="number">
-                                        <span data-counter="counterup" data-value="12,5">0</span>K AED </div>
+                                        <%
+                                            float Revenue = 0;
+                                            String RevenueStatQuery = "SELECT * FROM campsystem.stats WHERE Type = 'Revenue'";
+                                            Statement RevenueStatStatement = connection.createStatement();
+                                            ResultSet RevenueStatSet = RevenueStatStatement.executeQuery(RevenueStatQuery);
+
+                                            while(RevenueStatSet.next()){
+                                                Revenue = RevenueStatSet.getFloat("Value");
+                                            }
+                                            
+                                            String[] suffix = new String[]{"","K", "M", "B", "T"};
+                                            int MAX_LENGTH = 4;
+
+                                            String r = new DecimalFormat("##0E0").format(Revenue);
+                                            r = r.replaceAll("E[0-9]", suffix[Character.getNumericValue(r.charAt(r.length() - 1)) / 3]);
+                                            while(r.length() > MAX_LENGTH || r.matches("[0-9]+\\.[a-z]")){
+                                                r = r.substring(0, r.length()-2) + r.substring(r.length() - 1);
+                                            }
+                                            
+                                        if(r.contains("K")){
+                                            r = r.replace("K", "");
+                                            String tempstring = "<span data-counter=\"counterup\" data-value=\""+r+"\">0</span> K AED </div>";
+                                            out.println(tempstring);
+                                        }
+                                        else if(r.contains("M")){
+                                            r = r.replace("M", "");
+                                            out.println("<span data-counter=\"counterup\" data-value=\""+r+"\">0</span> M AED </div>");
+                                        }else if(r.contains("B")){
+                                            r = r.replace("B", "");
+                                            out.println("<span data-counter=\"counterup\" data-value=\""+r+"\">0</span> B AED </div>");
+                                        }else if(r.contains("T")){
+                                            r = r.replace("T", "");
+                                            out.println("<span data-counter=\"counterup\" data-value=\""+r+"\">0</span> T AED </div>");
+                                        }
+                                        else{
+                                            out.println("<span data-counter=\"counterup\" data-value=\""+r+"\">0</span> AED </div>");
+                                        }
+                                        
+                                        
+                                        %>
+                                        
+                                        
+                                        <!--<span data-counter="counterup" data-value="10">0</span> AED </div>
+                                        <!--<span data-counter="counterup" data-value="r">0</span> AED </div>-->
                                     <div class="desc"> Total Revenue </div>
                                 </div>
                                 <a class="more" href="javascript:;"> View more
@@ -194,11 +249,21 @@ Statement statement = connection.createStatement();
                                 </div>
                                 <div class="details">
                                     <div class="number">
-                                        <span data-counter="counterup" data-value="30">0</span>
+                                        <%
+                                        String ActiveCompanyQuery = "SELECT * from campsystem.stats WHERE Type = 'ActiveCompany'";
+                                        Statement ActiveCompanySt = connection.createStatement();
+                                        ResultSet ActiveCompanySet = ActiveCompanySt.executeQuery(ActiveCompanyQuery);
+                                        int ActiveCompanyCount = 0;
+                                        while(ActiveCompanySet.next()){
+                                            ActiveCompanyCount = Integer.parseInt(ActiveCompanySet.getString("Value"));
+                                        }
+                                        
+                                        %>
+                                        <span data-counter="counterup" data-value="<%out.println(ActiveCompanyCount);%>">0</span>
                                     </div>
                                     <div class="desc"> Active Companies </div>
                                 </div>
-                                <a class="more" href="javascript:;"> View more
+                                <a class="more" href="guestcompanies.jsp"> View more
                                     <i class="m-icon-swapright m-icon-white"></i>
                                 </a>
                             </div>
@@ -290,7 +355,10 @@ Statement statement = connection.createStatement();
         <script src="assets/global/scripts/app.min.js" type="text/javascript"></script>
         <!-- END THEME GLOBAL SCRIPTS -->
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
+        <script src="assets/global/plugins/ladda/spin.min.js" type="text/javascript"></script>
+        <script src="assets/global/plugins/ladda/ladda.min.js" type="text/javascript"></script>
         <script src="assets/pages/scripts/dashboard.min.js" type="text/javascript"></script>
+        <script src="assets/pages/scripts/ui-buttons.min.js" type="text/javascript"></script>
         <!-- END PAGE LEVEL SCRIPTS -->
         <!-- BEGIN THEME LAYOUT SCRIPTS -->
         <script src="assets/layouts/layout/scripts/layout.min.js" type="text/javascript"></script>

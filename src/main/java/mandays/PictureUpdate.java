@@ -27,7 +27,7 @@ public class PictureUpdate extends HttpServlet {
    private int maxFileSize = 5000 * 1024;
    private int maxMemSize = 40 * 1024;
    private int THRESHOLD_SIZE = 40 * 1024;
-   String WebDirectory = "uploadedcontent"+File.separator+"usersdata"+File.separator;
+   String WebDirectory = "uploadedcontent"+"/"+"usersdata"+"/";
    private File file ;
    int temp = 0;
    
@@ -36,7 +36,7 @@ public class PictureUpdate extends HttpServlet {
       //filePath = getServletContext().getInitParameter("file-upload"); 
       filePath = "/home/ahsan/temp/";
       
-      filePath = getServletContext().getRealPath("")+File.separator+WebDirectory;
+      filePath = getServletContext().getRealPath("")+"/"+WebDirectory;
       try{
             new File(filePath).mkdir();
             new File(filePath).mkdirs();
@@ -138,33 +138,6 @@ public class PictureUpdate extends HttpServlet {
 
             
             
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
             if (!ServletFileUpload.isMultipartContent(request)) {
                 out.println("Request does not contain upload data");
                 out.flush();
@@ -197,6 +170,7 @@ public class PictureUpdate extends HttpServlet {
                 // maximum size that will be stored in memory
                 factory.setSizeThreshold(THRESHOLD_SIZE);
                 String currentUsersHomeDir = System.getProperty("user.home");
+                new File(currentUsersHomeDir+"/temp").mkdirs();
                 factory.setRepository(new File(currentUsersHomeDir+"/temp"));
                 // Location to save data that is larger than maxMemSize.
                 // Create a new file upload handler

@@ -21,15 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class guestcompany extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -45,11 +37,17 @@ public class guestcompany extends HttpServlet {
                 out.println(companyname+" And "+ roomcat+ " And " + foodcat+ " And "+ bathroom+ " And " + priceperson);
                 String updatepricequery = "INSERT INTO companiesrates (ID, CompanyID, roomtypeID, foodtypeID, bathroom, price) "
                         + "VALUES (NULL, '"+companyname+"', '"+roomcat+"', '"+foodcat+"', '"+bathroom+"', '"+priceperson+"');";
-                
+                String submitType = request.getParameter("submit");
+                System.out.println(submitType);
                 try{
                     Statement updatepricest = con.createStatement();
                     updatepricest.executeUpdate(updatepricequery);
-                    response.sendRedirect("dashboard.jsp");
+                    if(submitType.equals("Submit & Add More")){
+                        response.sendRedirect("pricingupdate.jsp");
+                    }else{
+                        response.sendRedirect("dashboard.jsp");
+                    }
+                    
                 }catch(Exception ex){
                     System.out.println(ex);
                 }
