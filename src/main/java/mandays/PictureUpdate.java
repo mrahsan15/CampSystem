@@ -36,7 +36,7 @@ public class PictureUpdate extends HttpServlet {
       //filePath = getServletContext().getInitParameter("file-upload"); 
       filePath = "/home/ahsan/temp/";
       
-      filePath = getServletContext().getRealPath("")+"/"+WebDirectory;
+      filePath = WebDirectory;
       try{
             new File(filePath).mkdir();
             new File(filePath).mkdirs();
@@ -170,8 +170,8 @@ public class PictureUpdate extends HttpServlet {
                 // maximum size that will be stored in memory
                 factory.setSizeThreshold(THRESHOLD_SIZE);
                 String currentUsersHomeDir = System.getProperty("user.home");
-                new File(currentUsersHomeDir+"/temp").mkdirs();
-                factory.setRepository(new File(currentUsersHomeDir+"/temp"));
+                new File("temp").mkdirs();
+                factory.setRepository(new File("temp"));
                 // Location to save data that is larger than maxMemSize.
                 // Create a new file upload handler
                 ServletFileUpload upload = new ServletFileUpload(factory);

@@ -60,6 +60,9 @@ public class checkin extends HttpServlet {
             Connection con = new DBConnectivity().ConnectSql();
             try{
                 int updated = con.createStatement().executeUpdate(updatequery);
+                out.println("<script type=\"text/javascript\">"
+                        + "window.print();"
+                        + "</script>");
                 response.sendRedirect("mandaysdata.jsp");
             }catch(Exception ex){
                 System.out.println(ex);

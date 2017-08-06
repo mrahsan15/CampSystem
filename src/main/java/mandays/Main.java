@@ -24,15 +24,21 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
+import java.nio.file.FileStore;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.io.FileSystemUtils;
 import static org.apache.poi.hssf.usermodel.HeaderFooter.file;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -59,80 +65,91 @@ public class Main {
         
         try{
         
-        String RESULT
-        = System.getProperty("user.home")+"/Desktop/test.pdf";
-        System.out.println(RESULT);
-        File file = new File(RESULT);
-        file.createNewFile();
-        
-        Document document = new Document(PageSize.LETTER.rotate());
-        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(RESULT));
-        document.open();
- 
-        PdfContentByte canvas = writer.getDirectContent();
-        Rectangle rect = new Rectangle(820, 570, 18, 500);
-        Paragraph header = new Paragraph();
-        header.setAlignment(Element.ALIGN_CENTER);
-        
-        
-        header.setFont(new Font(FontFamily.HELVETICA, 46, Font.NORMAL, BaseColor.RED));
-//        header.add("Pioneers Catering Services");
-        document.add(header);
-        rect.setBorder(Rectangle.BOX);
-        rect.setBorderWidth(2);
-//        canvas.rectangle(rect);
-        
-        
-        Font red = new Font(FontFamily.HELVETICA, 46, Font.NORMAL, BaseColor.RED);
-        Chunk redText = new Chunk("Pioneers Catering Services", red);
-        Font blue = new Font(FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.BLUE);
-        Chunk blackText = new Chunk("Summary for XYZ Company");
-        Font green = new Font(FontFamily.HELVETICA, 12, Font.ITALIC, BaseColor.GREEN);
-        Chunk greenText = new Chunk("This text is green and italic. ", green);
-        
-        header.add(redText);
-        
-        Paragraph p1 = new Paragraph(redText);
-        p1.setAlignment(Element.ALIGN_CENTER);
-        Paragraph p2 = new Paragraph(blackText);
-        p2.setAlignment(Element.ALIGN_CENTER);
-        
-//        document.add(p1);
-        
-        ColumnText ct = new ColumnText(writer.getDirectContent());
-        
-        ct.setSimpleColumn(820, 590, 20, 500);
-        
-        ct.addElement(p1);
-        
-        ct.addElement(p2);    
-        
-        PdfPTable table = new PdfPTable(40);
-        table.setWidthPercentage(100);
-        PdfPCell cell12 = new PdfPCell();
-        cell12.setPhrase(new Phrase("Name Space"));
-        cell12.setRight(520);
-        cell12.setHorizontalAlignment(Element.PHRASE);
-        ColumnText ctt = new ColumnText(writer.getDirectContent());
-        ctt.setSimpleColumn(20, 25, 150, 250);
-        
-        cell12.setColumn(ctt);
-        cell12.setFixedHeight(70);
-        table.addCell(cell12);
-        for(int aw = 0; aw < 1020; aw++){
-//            table.addCell("This is Sparta!");
-        }
-        
-        PdfPTable table1 = new PdfPTable(7);
-        for(int aw = 0; aw < 40; aw++){
-            PdfPCell cell11 = new PdfPCell(new Phrase(" "));
-            cell11.setBorder(0); 
-            table1.addCell(cell11);
-        }
-        
-        ct.go();
-        document.add(table1);
-        document.add(table);
+            
+            double freediskkb = FileSystemUtils.freeSpaceKb("/");
+            double freediskmb = freediskkb/1024;
+            double freediskgb = freediskmb/1024;
+            double freedisktotal = freediskmb/1024;
+            
+            System.out.printf("KBs: %.10f%n", freediskkb);
+            System.out.println("MBs: "+freediskmb);
+            System.out.printf("GBs: %.3f%n", freedisktotal);
+            
+//            
+//        String RESULT
+//        = System.getProperty("user.home")+"/Desktop/test.pdf";
+//        System.out.println(RESULT);
+//        File file = new File(RESULT);
+//        file.createNewFile();
+//        
+//        Document document = new Document(PageSize.LETTER.rotate());
+//        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(RESULT));
+//        document.open();
+// 
+//        PdfContentByte canvas = writer.getDirectContent();
+//        Rectangle rect = new Rectangle(820, 570, 18, 500);
+//        Paragraph header = new Paragraph();
+//        header.setAlignment(Element.ALIGN_CENTER);
+//        
+//        
+//        header.setFont(new Font(FontFamily.HELVETICA, 46, Font.NORMAL, BaseColor.RED));
+////        header.add("Pioneers Catering Services");
+//        document.add(header);
+//        rect.setBorder(Rectangle.BOX);
+//        rect.setBorderWidth(2);
+////        canvas.rectangle(rect);
+//        
+//        
+//        Font red = new Font(FontFamily.HELVETICA, 46, Font.NORMAL, BaseColor.RED);
+//        Chunk redText = new Chunk("Pioneers Catering Services", red);
+//        Font blue = new Font(FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.BLUE);
+//        Chunk blackText = new Chunk("Summary for XYZ Company");
+//        Font green = new Font(FontFamily.HELVETICA, 12, Font.ITALIC, BaseColor.GREEN);
+//        Chunk greenText = new Chunk("This text is green and italic. ", green);
+//        
+//        header.add(redText);
+//        
+//        Paragraph p1 = new Paragraph(redText);
+//        p1.setAlignment(Element.ALIGN_CENTER);
+//        Paragraph p2 = new Paragraph(blackText);
+//        p2.setAlignment(Element.ALIGN_CENTER);
+//        
+////        document.add(p1);
+//        
+//        ColumnText ct = new ColumnText(writer.getDirectContent());
+//        
+//        ct.setSimpleColumn(820, 590, 20, 500);
+//        
+//        ct.addElement(p1);
+//        
+//        ct.addElement(p2);    
+//        
+//        PdfPTable table = new PdfPTable(40);
+//        table.setWidthPercentage(100);
+//        PdfPCell cell12 = new PdfPCell();
+//        cell12.setPhrase(new Phrase("Name Space"));
+//        cell12.setRight(520);
+//        cell12.setHorizontalAlignment(Element.PHRASE);
+//        ColumnText ctt = new ColumnText(writer.getDirectContent());
+//        ctt.setSimpleColumn(20, 25, 150, 250);
+//        
+//        cell12.setColumn(ctt);
+//        cell12.setFixedHeight(70);
+//        table.addCell(cell12);
+//        for(int aw = 0; aw < 1020; aw++){
+////            table.addCell("This is Sparta!");
+//        }
+//        
+//        PdfPTable table1 = new PdfPTable(7);
+//        for(int aw = 0; aw < 40; aw++){
+//            PdfPCell cell11 = new PdfPCell(new Phrase(" "));
+//            cell11.setBorder(0); 
+//            table1.addCell(cell11);
+//        }
+//        
+//        ct.go();
+//        document.add(table1);
+//        document.add(table);
 //        ct.addElement(table);
 //        ct.addElement(p2);
         
@@ -196,7 +213,7 @@ public class Main {
 //        htmlworker.parse(new StringReader(HTML));
 //        htmlworker.endDocument();
         
-        document.close();
+//        document.close();
         
         
         

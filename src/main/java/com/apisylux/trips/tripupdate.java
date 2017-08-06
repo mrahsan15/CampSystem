@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -12,141 +15,150 @@ import javax.servlet.http.HttpServletResponse;
 
 public class tripupdate extends HttpServlet {
 
+    private String TripVolume = "";
+    private String TripCompanyID= "";
+    private String TripType = "";
+    private String TripCount = "";
+    private String TripDate = "";
+    private String SubmitType = "";
+    private String TripCompanyName = "";
+    private String TripTypes = "";
+    private String measurement = "";
+    private String price = "";
+    
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            Connection connect = new DBConnectivity().ConnectSql();
+            Connection connection = new DBConnectivity().ConnectSql();
             
-            
-            String updatecheck = request.getParameter("check");
             String updatetype = request.getParameter("type");
             
-            
-            
-            if(!(updatecheck == null)){
-                if(updatetype.equals("drinking")){
-                    int company = Integer.parseInt(request.getParameter("company"));
-                    String size = request.getParameter("size");
-                    int tripscount = Integer.parseInt(request.getParameter("tripscount"));
-                    String tripdate = request.getParameter("tripdate");
-                    String query = "INSERT INTO tripdrinking (ID, CompanyID, Size, tripscount, dateofregister) VALUES (NULL, "+company+", '"+size+"', "+tripscount+", '"+tripdate+" 00:00:00')";
-                    try{
-                        connect.createStatement().executeUpdate(query);
-                        out.println("Updated!");
-                    }catch(Exception ex){
-                        System.out.println(ex);
-                    }
+            //Trip Prices Update
+            if(updatetype.equals("price")){
+                try{
+                TripCompanyName = request.getParameterValues("TripCompanyName")[0];
+                }catch(Exception ex){
+                    System.out.println("Trip Company ID has Error.");
+                }
+                try{
+                    TripTypes = request.getParameterValues("TripTypes")[0];
+                }catch(Exception ex){
+                    System.out.println("Trip types has Error.");
+                }
+                try{
+                    measurement = request.getParameterValues("measurement")[0];
+                }catch(Exception ex){
+                    System.out.println("Trip measurement has Error.");
+                }
+                try{
+                    price = request.getParameterValues("price")[0];
+                }catch(Exception ex){
+                    System.out.println("Trip price has Error.");
+                }
+                
+                String UpdatePriceQuery;
+                UpdatePriceQuery = "INSERT INTO campsystem.tripprices ("
+                        + "CompanyID, "
+                        + "Type, "
+                        + "Size, "
+                        + "Price, "
+                        + "UpdateDate) "
+                        + "VALUES ("
+                        + "'"+TripCompanyName+"', "
+                        + "'"+TripTypes+"', "
+                        + "'"+measurement+"', "
+                        + "'"+price+"', "
+                        + "CURRENT_TIMESTAMP)";
+                try{
+                    Statement UpdatePriceSt = connection.createStatement();
+                    UpdatePriceSt.executeUpdate(UpdatePriceQuery);
                     
-                }else if(updatetype.equals("sewage")){
-                    int company = Integer.parseInt(request.getParameter("company"));
-                    String size = request.getParameter("size");
-                    int tripscount = Integer.parseInt(request.getParameter("tripscount"));
-                    String tripdate = request.getParameter("tripdate");
-                    String query = "INSERT INTO tripsewage (ID, CompanyID, Size, tripscount, dateofregister) VALUES (NULL, "+company+", '"+size+"', "+tripscount+", '"+tripdate+" 00:00:00')";
-                    try{
-                        connect.createStatement().executeUpdate(query);
-                        out.println("Updated!");
-                    }catch(Exception ex){
-                        System.out.println(ex);
-                    }
-                    
-                }else if(updatetype.equals("skip")){
-                    int company = Integer.parseInt(request.getParameter("company"));
-                    String size = request.getParameter("size");
-                    int tripscount = Integer.parseInt(request.getParameter("tripscount"));
-                    String tripdate = request.getParameter("tripdate");
-                    String query = "INSERT INTO tripskip (ID, CompanyID, Size, tripscount, dateofregister) VALUES (NULL, "+company+", '"+size+"', "+tripscount+", '"+tripdate+" 00:00:00')";
-                    try{
-                        connect.createStatement().executeUpdate(query);
-                        out.println("Updated!");
-                    }catch(Exception ex){
-                        System.out.println(ex);
-                    }
-                }else if(updatetype.equals("company")){
-                    String companyname = request.getParameter("companyname");
-                    String companytype = request.getParameter("companytype");
-                    String tripsize = request.getParameter("tripsize");
-                    int tripprice = Integer.parseInt(request.getParameter("tripprice"));
-                    try{
-                        ResultSet company = connect.createStatement().executeQuery("SELECT * from tripcompany WHERE CompanyName = '"+companyname+"'");
-                        try{
-                            if(!company.next()){
-                                String Query = "INSERT INTO tripcompany (ID, CompanyName) VALUES (NULL, '"+companyname+"');";
-                                connect.createStatement().executeUpdate(Query);
-                                ResultSet comid = connect.createStatement().executeQuery("SELECT * from tripcompany WHERE CompanyName = '"+companyname+"'");
-                                comid.next();
-                                int id = comid.getInt("ID");
-                                String update = "INSERT INTO tripprices (ID, CompanyID, Type, Size, Price) VALUES (NULL, "+id+" , '"+companytype+"', '"+tripsize+"', '"+tripprice+"');";
-                                connect.createStatement().executeUpdate(update);
-                            }else{
-                                
-                                ResultSet comid = connect.createStatement().executeQuery("SELECT * from tripcompany WHERE CompanyName = '"+companyname+"'");
-                                comid.next();
-                                int id = comid.getInt("ID");
-                                String query = "SELECT * from tripprices WHERE CompanyID = "+id + " AND Type = '"+companytype+"'" ;
-                                comid = connect.createStatement().executeQuery(query);
-                                
-                                if(!comid.next()){
-                                    String update = "INSERT INTO tripprices (ID, CompanyID, Type, Size, Price) VALUES (NULL, "+id+" , '"+companytype+"', '"+tripsize+"', '"+tripprice+"');";
-                                    connect.createStatement().executeUpdate(update);
-                                }else{
-                                    int aid =comid.getInt("ID");
-                                    String tempsize = comid.getString("Size");
-                                    tempsize = tempsize+ (","+tripsize);
-                                    String tempprice = comid.getString("Price");
-                                    tempprice = tempprice+ (","+tripprice);
-                                    String update1 = "UPDATE tripprices SET Price = '"+tempprice+"' WHERE tripprices.ID = "+aid;
-                                    String update2 = "UPDATE tripprices SET Size = '"+tempsize+"' WHERE tripprices.ID = "+aid;
-                                    try{
-                                        connect.createStatement().executeUpdate(update1);
-                                        connect.createStatement().executeUpdate(update2);
-                                        
-                                    }catch(Exception ex){
-                                        System.out.println(ex);
-                                    }
-                                }
-                                
-                                
-                                
-                                
-                                
-                            }
-                        
-                        }catch(NullPointerException ex){
-                            String Query = "INSERT INTO tripcompany (ID, CompanyName) VALUES (NULL, '"+companyname+"');";
-                            connect.createStatement().executeUpdate(Query);
-                            int id = connect.createStatement().executeQuery("SELECT * from tripcompany WHERE CompanyName = '"+companyname+"'").getInt("ID");
-                            String update = "INSERT INTO tripprices (ID, CompanyID, Type, Size, Price) VALUES (NULL, "+id+" , '"+companytype+"', '"+tripsize+"', '"+tripprice+"');";
-                            
-                            connect.createStatement().executeUpdate(update);
-                        }
-                        
-                        
-                    }catch(Exception ex){
-                        System.out.println(ex);
-                    }
-                    
-                    
+                }catch(Exception ex){
+                    System.out.println(ex);
+                }
+                
+                String SubmitType = request.getParameter("submit");
+                if(SubmitType.equals("addmore")){
+                    response.sendRedirect("updatetripprices.jsp");
+                }else if(SubmitType.equals("exit")){
+                    response.sendRedirect("");
                 }
             }
             
-            
-            
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet tripupdate</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            
-            response.sendRedirect("index.html");
-            
-            
-            out.println("</body>");
-            out.println("</html>");
+            //Daily Trip Counts Update Code
+            if(updatetype.equals("trips")){
+                try{
+                    TripVolume = request.getParameterValues("selecttripvolume")[0];
+                    if(TripVolume.equals("1")){
+                        TripVolume = "5000";
+                    }else if(TripVolume.equals("2")){
+                        TripVolume = "10000";
+                    }else if(TripVolume.equals("3")){
+                        TripVolume = "15000";
+                    }else{
+                        TripVolume = "";
+                    }
+                    
+                }catch(Exception ex){
+                    System.out.println("Trip Volume has some Error.");
+                }
+                try{
+                    TripCompanyID = request.getParameterValues("selecttripcompany")[0];
+                }catch(Exception ex){
+                    System.out.println("Trip Company ID has some Error.");
+                }
+                try{
+                    TripType = request.getParameterValues("selecttriptypes")[0];
+                }catch(Exception ex){
+                    System.out.println("Trip Type has some errors.");
+                }
+                try{
+                    TripCount= request.getParameter("tripcounts");
+                }catch(Exception ex){
+                    System.out.println("Trip Counts has some Error.");
+                }
+                try{
+                    TripDate = request.getParameter("tripdate");
+                    SimpleDateFormat htmltojava = new SimpleDateFormat("MM/dd/yyyy");
+                    Date date = htmltojava.parse(TripDate);
+                    SimpleDateFormat javatosql = new SimpleDateFormat("yyyy-MM-dd");
+                    TripDate = javatosql.format(date);
+                    
+                }catch(Exception ex){
+                    System.out.println("Trip Date has some Error.");
+                }
+                try{
+                    SubmitType = request.getParameterValues("submit")[0];
+                }catch(Exception ex){
+                    System.out.println("Submit Type has some Error.");
+                }
+                
+                String TripUpdateQuery = "INSERT INTO campsystem.trips "
+                        + "(CompanyID, Size, tripscount, dateofregister, triptype) "
+                        + "VALUES "
+                        + "('"
+                        +TripCompanyID+"', '"
+                        +TripVolume+"', '"
+                        +TripCount+"', '"
+                        +TripDate+"', '"
+                        +TripType+"')";
+                
+                try{
+                    Statement TripUpdateSt = connection.createStatement();
+                    TripUpdateSt.executeUpdate(TripUpdateQuery);
+                }catch(Exception ex){
+                    System.out.println(ex);
+                }
+                
+                if(SubmitType.equals("addmore")){
+                    response.sendRedirect("trips.jsp");
+                }else if(SubmitType.equals("addmore")){
+//                    response.sendRedirect("trips.jsp");
+                }
+            }
         }
     }
 

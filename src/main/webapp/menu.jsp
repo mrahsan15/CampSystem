@@ -65,6 +65,8 @@
                 }
             }
             
+            
+            
             if(OperationsFound > 0){
                 out.println(
 "                        <li class=\"heading\">\n" +
@@ -73,6 +75,7 @@
             }
             
             
+            //Complain System
             int systemfound = 0;
             int activemenu= 0;
             String SystemMenu = "";
@@ -121,6 +124,8 @@
                 out.println("</li>");
             }
             
+            
+            //Mandays System
             systemfound = 0;
             activemenu= 0;
             SystemMenu = "";
@@ -218,7 +223,7 @@
             
             
             
-            
+            //Food Mandays Heading
             systemfound = 0;
             activemenu= 0;
             SystemMenu = "";
@@ -265,6 +270,57 @@
                 out.println("</ul>");
                 out.println("</li>");
             }
+            
+            
+            
+            //Transportation Heading
+            systemfound = 0;
+            activemenu= 0;
+            SystemMenu = "";
+            for(int i = 1; i < menusorted.length; i++){
+                
+                menuSet = menustatement.executeQuery("SELECT * from menu WHERE ID = "+menusorted[i]);
+                menuSet.next();
+                if(menuSet.getString("MenuType").equals("Transportation")){
+                    systemfound++;
+                    String activeMenu = "";
+                    if(request.getServletPath().equals("/"+menuSet.getString("MenuUrl"))){
+                        activeMenu = " start active open";
+                        activemenu++;
+                    }
+                    SystemMenu += (
+"                        <li class=\"nav-item "+activeMenu+"\">\n" +
+"                            <a href=\""+menuSet.getString("MenuUrl")+"\" class=\"nav-link nav-toggle\">\n" +
+"                                <i class=\""+menuSet.getString("MenuIcon")+"\"></i>\n" +
+"                                <span class=\"title\">"+menuSet.getString("MenuName")+"</span>\n" +
+"                                <span class=\"selected\"></span>\n" +
+"                            </a>\n" +
+"                        </li>\n");
+                }
+            }
+            
+            if(systemfound > 0){
+                String tempactive= "";
+                String tempselected = "";
+                String temparrow = "arrow ";
+                if(activemenu > 0){
+                    tempactive = "  active open";
+                    tempselected = "<span class=\"selected\"></span>";
+                    temparrow = "arrow open";
+                }
+                out.println("<li class=\"nav-item  "+ tempactive+" \">\n" +
+"                            <a href=\"javascript:;\" class=\"nav-link nav-toggle\">\n" +
+"                                <i class=\"fa fa-bus\"></i>\n" +
+"                                <span class=\"title\">Transportation</span>\n"
+                        + tempselected +
+"                                <span class=\""+temparrow+"\"></span>\n" +
+"                            </a>");
+                out.println("<ul class=\"sub-menu\">");
+                out.println(SystemMenu);
+                out.println("</ul>");
+                out.println("</li>");
+            }
+            
             
             
             

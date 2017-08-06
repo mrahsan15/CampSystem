@@ -84,6 +84,9 @@
         <servlet-name>updatestats</servlet-name>
         <servlet-class>mandays.updatestats</servlet-class>
     </servlet>
+    
+
+    
     <servlet-mapping>
         <servlet-name>tripupdate</servlet-name>
         <url-pattern>/tripupdate</url-pattern>
@@ -168,9 +171,12 @@
         <servlet-name>updatestats</servlet-name>
         <url-pattern>/updatestats</url-pattern>
     </servlet-mapping>
+    
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
-</web-app>
+   
+
+    </web-app>

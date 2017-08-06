@@ -1,3 +1,9 @@
+<%@page import="java.io.IOException"%>
+<%@page import="java.nio.file.Files"%>
+<%@page import="java.nio.file.FileStore"%>
+<%@page import="java.nio.file.Path"%>
+<%@page import="java.nio.file.FileSystems"%>
+<%@page import="java.text.NumberFormat"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="mandays.menuoutput"%>
 <!DOCTYPE html>
@@ -132,6 +138,23 @@ Statement statement = connection.createStatement();
             <div class="page-content-wrapper">
                 <!-- BEGIN CONTENT BODY -->
                 <div class="page-content">
+                    
+                    
+                    <!--Update Panel Start-->
+                    <%
+                       boolean showupdatepanel = false;
+                        if(showupdatepanel){
+                            out.println("<div class=\"panel panel-info\">"
+                                + "<div class=\"panel-heading\">"
+                                + "<h3 class=\"panel-title\">Updates v1.0</h3>"
+                                + "</div>"
+                                + "<div class=\"panel-body\"></div>"
+                                + "</div>"
+                                + "");
+                        }
+                    %>
+                    <!--Update Panel End-->
+                    
                     
                     <!-- BEGIN PAGE HEADER-->
                     <div class="page-toolbar">
@@ -288,10 +311,337 @@ Statement statement = connection.createStatement();
                     <div class="clearfix"></div>
                     <!-- END DASHBOARD STATS 1-->
                     <div class="row">
-                        <div class="col-md-6 col-sm-6">
+                        <div class="col-md-4 col-sm-4">
+                            <div class="portlet light bordered">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="icon-cursor font-dark hide"></i>
+                                        <span class="caption-subject font-dark bold uppercase">Server Details</span>
+                                    </div>
+                                    
+                                    <div class="actions">
+                                        <a href="" class="btn btn-sm btn-circle red easy-pie-chart-reload">
+                                            <i class="fa fa-repeat"></i> Reload </a>
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div class="easy-pie-chart">
+                                                <%
+                                                String usablepercentagespace = "";
+                                                NumberFormat nf = NumberFormat.getNumberInstance();
+                                                for (Path root : FileSystems.getDefault().getRootDirectories()) {
+                                                    System.out.print(root + ": ");
+                                                    try {
+                                                        FileStore store = Files.getFileStore(root);
+                                                        double usablespace = store.getUsableSpace();
+                                                        double totalspace = store.getTotalSpace();
+                                                        nf.setMaximumFractionDigits(2);
+                                                        usablepercentagespace = nf.format((usablespace/totalspace)*100);
+                                                        
+                                                        System.out.println("available=" + nf.format(store.getUsableSpace())
+                                                                            + ", total=" + nf.format(store.getTotalSpace()));
+                                                    } catch (IOException e) {
+                                                        System.out.println("error querying space: " + e.toString());
+                                                    }
+                                                }
+
+                                                
+                                                %>
+                                                <div class="number transactions" data-percent="<%out.println(usablepercentagespace);%>">
+                                                    <span><%out.println(usablepercentagespace);%></span>%</div>
+                                                <a class="title" href="javascript:;"> Free Disk Space
+                                                    <i class="icon-arrow-right"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
                         </div>
-                        <div class="col-md-6 col-sm-6">
-                        </div>
+                                                <div class="col-md-6 col-sm-6">
+                                <!-- BEGIN PORTLET-->
+                                <div class="portlet light bordered">
+                                    <div class="portlet-title tabbable-line">
+                                        <div class="caption">
+                                            <i class="icon-globe font-dark hide"></i>
+                                            <span class="caption-subject font-dark bold uppercase">Feeds</span>
+                                        </div>
+                                        <ul class="nav nav-tabs">
+                                            <li class="active">
+                                                <a href="#tab_1_1" class="active" data-toggle="tab"> System </a>
+                                            </li>
+                                            <li>
+                                                <!--<a href="#tab_1_2" data-toggle="tab"> Activities </a>-->
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="portlet-body">
+                                        <!--BEGIN TABS-->
+                                        <div class="tab-content">
+                                            <div class="tab-pane active" id="tab_1_1">
+                                                <div class="scroller" style="height: 339px;" data-always-visible="1" data-rail-visible="0">
+                                                    <ul class="feeds">
+                                                        <!--Feed items-->
+                                                        
+                                                        <%
+                                                            String Icon = "";
+                                                            String FeedContent = "";
+                                                            Timestamp FeedTime  ;
+                                                            int ActivityBy = 0;
+                                                            int Read = 0;
+                                                            
+                                                            
+                                                            String FeedsQuery = "SELECT * from Feeds";
+                                                            Statement FeedsStatement = connection.createStatement();
+                                                            ResultSet FeedsResult = FeedsStatement.executeQuery(FeedsQuery);
+                                                            while(FeedsResult.next()){
+                                                                    Icon = FeedsResult.getString("Icon");
+                                                                    FeedContent = FeedsResult.getString("FeedDetails");
+                                                                    FeedTime = FeedsResult.getTimestamp("Time");
+                                                                    ActivityBy = FeedsResult.getInt("ActivityBy");
+                                                                    Read = FeedsResult.getInt("Read");
+                                                                    
+                                                                    
+                                                                    
+                                                                    out.println("<li>"
+                                                                            + "<div class=\"col1\">"
+                                                                            + "<div class=\"cont\">"
+                                                                            + "<div class=\"cont-col1\">"
+                                                                            + "<div class=\"label label-sm label-success\">"
+                                                                            + "<i class=\"fa fa-bell-o\"></i>"
+                                                                            + "</div>"
+                                                                            + "</div>"
+                                                                            + "<div class=\"cont-col2\">"
+                                                                            + "<div class=\"desc\"> You have 4 pending tasks."
+                                                                            + "<span class=\"label label-sm label-info\"> Take action"
+                                                                            + "<i class=\"fa fa-share\"></i>"
+                                                                            + "</span>"
+                                                                            + "</div>"
+                                                                            + "</div>"
+                                                                            + "</div>"
+                                                                            + "</div>"
+                                                                            + "<div class=\"col2\">"
+                                                                            + "<div class=\"date\"> Just now </div>"
+                                                                            + "</div>"
+                                                                            + "</li>"
+                                                                            + "");
+                                                                    
+                                                            }
+                                                        
+                                                        
+                                                        
+                                                        %>
+                                                        
+                                                        
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane" id="tab_1_2">
+                                                <div class="scroller" style="height: 290px;" data-always-visible="1" data-rail-visible1="1">
+                                                    <ul class="feeds">
+                                                        <li>
+                                                            <a href="javascript:;">
+                                                                <div class="col1">
+                                                                    <div class="cont">
+                                                                        <div class="cont-col1">
+                                                                            <div class="label label-sm label-success">
+                                                                                <i class="fa fa-bell-o"></i>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="cont-col2">
+                                                                            <div class="desc"> New user registered </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col2">
+                                                                    <div class="date"> Just now </div>
+                                                                </div>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="javascript:;">
+                                                                <div class="col1">
+                                                                    <div class="cont">
+                                                                        <div class="cont-col1">
+                                                                            <div class="label label-sm label-success">
+                                                                                <i class="fa fa-bell-o"></i>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="cont-col2">
+                                                                            <div class="desc"> New order received </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col2">
+                                                                    <div class="date"> 10 mins </div>
+                                                                </div>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <div class="col1">
+                                                                <div class="cont">
+                                                                    <div class="cont-col1">
+                                                                        <div class="label label-sm label-danger">
+                                                                            <i class="fa fa-bolt"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="cont-col2">
+                                                                        <div class="desc"> Order #24DOP4 has been rejected.
+                                                                            <span class="label label-sm label-danger "> Take action
+                                                                                <i class="fa fa-share"></i>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col2">
+                                                                <div class="date"> 24 mins </div>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <a href="javascript:;">
+                                                                <div class="col1">
+                                                                    <div class="cont">
+                                                                        <div class="cont-col1">
+                                                                            <div class="label label-sm label-success">
+                                                                                <i class="fa fa-bell-o"></i>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="cont-col2">
+                                                                            <div class="desc"> New user registered </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col2">
+                                                                    <div class="date"> Just now </div>
+                                                                </div>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="javascript:;">
+                                                                <div class="col1">
+                                                                    <div class="cont">
+                                                                        <div class="cont-col1">
+                                                                            <div class="label label-sm label-success">
+                                                                                <i class="fa fa-bell-o"></i>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="cont-col2">
+                                                                            <div class="desc"> New user registered </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col2">
+                                                                    <div class="date"> Just now </div>
+                                                                </div>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="javascript:;">
+                                                                <div class="col1">
+                                                                    <div class="cont">
+                                                                        <div class="cont-col1">
+                                                                            <div class="label label-sm label-success">
+                                                                                <i class="fa fa-bell-o"></i>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="cont-col2">
+                                                                            <div class="desc"> New user registered </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col2">
+                                                                    <div class="date"> Just now </div>
+                                                                </div>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="javascript:;">
+                                                                <div class="col1">
+                                                                    <div class="cont">
+                                                                        <div class="cont-col1">
+                                                                            <div class="label label-sm label-success">
+                                                                                <i class="fa fa-bell-o"></i>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="cont-col2">
+                                                                            <div class="desc"> New user registered </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col2">
+                                                                    <div class="date"> Just now </div>
+                                                                </div>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="javascript:;">
+                                                                <div class="col1">
+                                                                    <div class="cont">
+                                                                        <div class="cont-col1">
+                                                                            <div class="label label-sm label-success">
+                                                                                <i class="fa fa-bell-o"></i>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="cont-col2">
+                                                                            <div class="desc"> New user registered </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col2">
+                                                                    <div class="date"> Just now </div>
+                                                                </div>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="javascript:;">
+                                                                <div class="col1">
+                                                                    <div class="cont">
+                                                                        <div class="cont-col1">
+                                                                            <div class="label label-sm label-success">
+                                                                                <i class="fa fa-bell-o"></i>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="cont-col2">
+                                                                            <div class="desc"> New user registered </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col2">
+                                                                    <div class="date"> Just now </div>
+                                                                </div>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="javascript:;">
+                                                                <div class="col1">
+                                                                    <div class="cont">
+                                                                        <div class="cont-col1">
+                                                                            <div class="label label-sm label-success">
+                                                                                <i class="fa fa-bell-o"></i>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="cont-col2">
+                                                                            <div class="desc"> New user registered </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col2">
+                                                                    <div class="date"> Just now </div>
+                                                                </div>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--END TABS-->
+                                    </div>
+                                </div>
+                                <!-- END PORTLET-->
+                            </div>
                     </div>
                 </div>
 

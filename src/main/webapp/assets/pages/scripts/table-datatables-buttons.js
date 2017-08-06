@@ -42,7 +42,7 @@ var TableDatatablesButtons = function () {
             //"paging": false, disable pagination
 
             "order": [
-                [0, 'asc']
+                
             ],
             
             "lengthMenu": [
@@ -50,7 +50,7 @@ var TableDatatablesButtons = function () {
                 [5, 10, 15, 20, "All"] // change per page values here
             ],
             // set the initial value
-            "pageLength": 10,
+            "pageLength": 100,
 
             "dom": "<'row' <'col-md-12'B>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>", // horizobtal scrollable datatable
 

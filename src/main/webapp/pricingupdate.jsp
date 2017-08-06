@@ -100,9 +100,7 @@ Statement statement = connection.createStatement();
                             </form>
                             <!-- END RESPONSIVE QUICK SEARCH FORM -->
                         </li>
-                        <%
-                        %><%@include file="menu.jsp" %><%
-                        %>
+                        <%@include file="menu.jsp" %>
                     </ul>
                 </div>
                 <!-- END SIDEBAR -->
@@ -230,19 +228,22 @@ Statement statement = connection.createStatement();
                                                         <label for="form_control_1">Select Food Category</label>
                                                     </div>
                                                 </div>
+                                                <!--Attached Bathroom Value is 1-->
+                                                <!--Common Bathroom value is 0-->
+
                                                 <div class="col-md-3">
                                                     <div class="form-group form-md-radios">
                                                         <label>Bathroom Type</label>
                                                         <div class="md-radio-inline">
                                                             <div class="md-radio">
-                                                                <input type="radio" id="radio6" name="bathroom" value="0" class="md-radiobtn">
+                                                                <input type="radio" id="radio6" name="bathroom" value="1" class="md-radiobtn">
                                                                 <label for="radio6">
                                                                     <span></span>
                                                                     <span class="check"></span>
                                                                     <span class="box"></span> Attached </label>
                                                             </div>
                                                             <div class="md-radio">
-                                                                <input type="radio" id="radio7" name="bathroom" value="1" class="md-radiobtn" checked>
+                                                                <input type="radio" id="radio7" name="bathroom" value="0" class="md-radiobtn" checked>
                                                                 <label for="radio7">
                                                                     <span></span>
                                                                     <span class="check"></span>
@@ -253,6 +254,7 @@ Statement statement = connection.createStatement();
                                                     </div>
                                                 </div>
                                             </div>
+                                                            
                                                             
                                                             <div class="row">
                                                                 <div class="col-md-4">

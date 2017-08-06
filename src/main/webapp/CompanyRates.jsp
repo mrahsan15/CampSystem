@@ -294,13 +294,30 @@ Statement statement = connection.createStatement();
                                                 <thead>
                                                     <tr>
                                                         <th> # </th>
-                                                        <th colspan="2" style="text-align: center;"> 1x1 </th>
+                                                        <th colspan="6" style="text-align: center;"> 1x1 </th>
                                                         <th colspan="2" style="text-align: center;"> 2x1 </th>
                                                         <th colspan="2" style="text-align: center;"> 3x1 </th>
                                                         <th colspan="2" style="text-align: center;"> 4x1 </th>
                                                         <th colspan="2" style="text-align: center;"> 6x1 </th>
                                                         <th colspan="2" style="text-align: center;"> 8x1 </th>
 
+                                                    </tr>
+                                                    <tr>
+                                                        <th>  </th>
+                                                        <th colspan="2"> Senior </th>
+                                                        <th colspan="2"> Junior </th>
+                                                        <th colspan="2"> Labor </th>
+                                                        
+                                                        <th> Attached </th>
+                                                        <th> Common </th>
+                                                        <th> Attached </th>
+                                                        <th> Common </th>
+                                                        <th> Attached </th>
+                                                        <th> Common </th>
+                                                        <th> Attached </th>
+                                                        <th> Common </th>
+                                                        <th> Attached </th>
+                                                        
                                                     </tr>
                                                     <tr>
                                                         <th>  </th>
@@ -384,6 +401,134 @@ Statement statement = connection.createStatement();
                                     </div>
                                 </div>
                                 <!-- END SAMPLE TABLE PORTLET-->
+                                
+                                <!-- BEGIN SAMPLE TABLE PORTLET-->
+                                <div class="portlet box red">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-cogs"></i>Basic Bootstrap 3.0 Responsive Table </div>
+                                        <div class="tools">
+                                            <a href="javascript:;" class="collapse"> </a>
+                                            <a href="#portlet-config" data-toggle="modal" class="config"> </a>
+                                            <a href="javascript:;" class="reload"> </a>
+                                            <a href="javascript:;" class="remove"> </a>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body">
+                                        <div class="table-responsive">
+                                            <table class="table" border="3">
+                                                <thead>
+                                                    <tr>
+                                                        <th> # </th>
+                                                        <th colspan="6" style="text-align: center;"> 1x1 </th>
+                                                        <th colspan="2" style="text-align: center;"> 2x1 </th>
+                                                        <th colspan="2" style="text-align: center;"> 3x1 </th>
+                                                        <th colspan="2" style="text-align: center;"> 4x1 </th>
+                                                        <th colspan="2" style="text-align: center;"> 6x1 </th>
+                                                        <th colspan="2" style="text-align: center;"> 8x1 </th>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <th>  </th>
+                                                        <th colspan="2"> Senior </th>
+                                                        <th colspan="2"> Junior </th>
+                                                        <th colspan="2"> Labor </th>
+                                                        
+                                                        <th> Attached </th>
+                                                        <th> Common </th>
+                                                        <th> Attached </th>
+                                                        <th> Common </th>
+                                                        <th> Attached </th>
+                                                        <th> Common </th>
+                                                        <th> Attached </th>
+                                                        <th> Common </th>
+                                                        <th> Attached </th>
+                                                        
+                                                    </tr>
+                                                    <tr>
+                                                        <th>  </th>
+                                                        <th> Common </th>
+                                                        <th> Attached </th>
+                                                        <th> Common </th>
+                                                        <th> Attached </th>
+                                                        <th> Common </th>
+                                                        <th> Attached </th>
+                                                        <th> Common </th>
+                                                        <th> Attached </th>
+                                                        <th> Common </th>
+                                                        <th> Attached </th>
+                                                        <th> Common </th>
+                                                        <th> Attached </th>
+                                                        
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td> 1 </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td> 1 </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                    </tr><tr>
+                                                        <td> 1 </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                    </tr><tr>
+                                                        <td> 1 </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                        <td> Table cell </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- END SAMPLE TABLE PORTLET-->
+                                
+                                
                     
                     
                     

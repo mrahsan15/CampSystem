@@ -307,6 +307,13 @@ Statement statement = connection.createStatement();
         <link href="assets/layouts/layout/css/custom.min.css" rel="stylesheet" type="text/css" />
         <!-- END THEME LAYOUT STYLES -->
         <link rel="shortcut icon" href="favicon.ico" /> 
+        
+        <script>
+            function printTable(){
+                var TableLayout = document.getElementById("").outerHTML;
+            }
+        </script>
+        
     </head>
     <!-- END HEAD -->
     
@@ -1450,12 +1457,7 @@ Statement statement = connection.createStatement();
         
                                         
         <!-- BEGIN FOOTER -->
-        <div class="page-footer">
-            <div class="page-footer-inner"> 2016 &copy; Camp System by Ahsan Mahmood.</div>
-            <div class="scroll-to-top">
-                <i class="icon-arrow-up"></i>
-            </div>
-        </div>
+        <%@include file="footer.jsp" %>
         
         <!-- END FOOTER -->
         <!--[if lt IE 9]>
